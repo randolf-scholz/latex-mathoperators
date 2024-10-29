@@ -1,8 +1,12 @@
 # Package `mathoperators`
 
-[Usage](#usage) | [Installation](#installation)
+[Usage](#usage) | [Requirements](#requirements) | [Installation](#installation)
 
 ## Usage
+
+```tex
+\usepackage{mathoperators}
+```
 
 This package provides:
 
@@ -31,13 +35,11 @@ This package provides:
 - Bunch of `\DecalaremathOperator`:
   - `\diag`, `\tr`, `\dom`, `\codom`, `\rank`, etc.
 
+## Requirements
 
-```tex
-\usepackage{mathoperators}
-```
-
-
-
+- `mathtools`, `amsmath`, `xparse`
+- `letltxmacro` when using `beamer` redefinitions
+- incompatible with `physics` package
 
 ## Installation
 
@@ -72,17 +74,11 @@ for folder in "$PROJECT_ROOT"/dependencies/**/*/; do
       [ -d "$file" ] && continue
       dest="$PROJECT_ROOT/${file//$parent/}"
       echo "symlinking (relative) $(basename "$file")"
-      echo "	source: $file"
-      echo "	destination: $dest"
+      echo -e "\tsource: $file"
+      echo -e "\tdestination: $dest"
       mkdir -p "$(dirname "$dest")"
       ln -sfr "$file" "$dest"
     done
   fi
 done
 ```
-
-
-
-
-
-

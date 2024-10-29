@@ -1,0 +1,353 @@
+% chktex-file 41
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{mathoperators}[2024/09/17]
+% NOTE: This package provides:
+% 1. Math Operators such as trace, diag, etc.
+% 2. Some specialized commands for linear algebra, probability, optimization, etc.
+% It does not provide any commands whose sole use is to type special symbols such as ≝ or ≙.
+% For such symbols, see the unicode-symbols, stix and other packages.
+
+% region dependencies ------------------------------------------------------------------
+% INCOMPATIBLE:
+\def\error@physics@incompatible{%
+	\@ifpackageloaded{physics}{% incompatible with physics package
+		\PackageError{mathoperators}{
+			The physics package is incompatible with the mathoperators package.
+			Consider using physics2 instead.
+		}{}
+	}
+}
+
+% Check both now and at the end of the preamble
+\error@physics@incompatible
+\AtEndPreamble{\error@physics@incompatible}
+
+% REQUIREMENTS:
+\RequirePackage{mathtools}
+\RequirePackage{amsmath}
+\RequirePackage{xparse}
+% endregion dependencies ---------------------------------------------------------------
+
+% region macros ------------------------------------------------------------------------
+% region physics package ---------------------------------------------------------------
+% SEE: https://tex.stackexchange.com/a/60546
+\newcommand{\mathopchar}[1]{\mathop{}\!\mathrm{#1}}
+\newcommand{\dd}{\mathopchar{d}}
+
+\DeclareDocumentCommand\dv{s o m g}{ % Derivative
+	% Usage: \dv{x} ⇝ d/dx,  \dv{f}{x} ⇝ df/dx,  \dv[n]{f}{x} ⇝ dⁿf/dxⁿ
+	% Use with \dv*{} for inline fractions
+	\def\dv@exp{\IfValueTF{#2}{^{#2}}{}}%
+	\def\dv@num{\IfValueTF{#4}{#3}{}}%
+	\def\dv@den{\IfValueTF{#4}{#4}{#3}}%
+	\IfBooleanTF{#1}{% inline
+		\frac{\dd\dv@exp\dv@num}{\dd\dv@den\dv@exp}%
+	}{% display
+		\frac{\dd\dv@exp\dv@num}{\dd\dv@den\dv@exp}%
+	}%
+}
+
+\DeclareDocumentCommand\pdv{s o m g}{ % Partial derivative
+	% Usage: \pdv{}{x}⇝ ∂/∂x,  \pdv{f}{x} ⇝ ∂f/∂x,  \pdv[n]{f}{x} ⇝ ∂ⁿ f/∂xⁿ
+	% Use with \pdv*{} for inline fractions
+	\def\pdv@exp{\IfValueTF{#2}{^{#2}}{}}%
+	\def\pdv@num{\IfValueTF{#4}{#3}{}}%
+	\def\pdv@den{\IfValueTF{#4}{#4}{#3}}%
+	\IfBooleanTF{#1}{% inline
+		\frac{\partial\pdv@exp\pdv@num}{\partial\pdv@den\pdv@exp}%
+	}{% display
+		\frac{\partial\pdv@exp\pdv@num}{\partial\pdv@den\pdv@exp}%
+	}%
+}
+
+\DeclareDocumentCommand\eval{s m}{ % Vertical evaluation bar
+	\IfBooleanTF{#1}% IF starred
+	{\left.#2\right|}%
+	{#2\rvert}%
+}
+
+\DeclareDocumentCommand\qq{ s m }{\IfBooleanTF{#1}{}{\quad}\text{#2}\quad}
+% endregion physics package ------------------------------------------------------------
+
+
+% region beamer-aware operators --------------------------------------------------------
+\@ifclassloaded{beamer}{%
+% FIXME: https://tex.stackexchange.com/q/565971
+\NewCommandCopy{\old@underbrace}{\underbrace}
+\NewCommandCopy{\old@overbrace}{\overbrace}
+\NewCommandCopy{\old@underbracket}{\underbracket}
+\NewCommandCopy{\old@overbracket}{\overbracket}
+\NewCommandCopy{\old@underset}{\underset}
+\NewCommandCopy{\old@overset}{\overset}
+
+\DeclareDocumentCommand{\underbrace}{d<> m e{_}}{%
+	\IfValueTF{#1}% IF <overlay-specification> given
+	{\old@underbrace{#2\onslide<#1>}_{#3}\onslide}%
+	{\old@underbrace{#2}_{#3}}%
+}%
+
+\DeclareDocumentCommand{\overbrace}{d<> m e{^}}{%
+	\IfValueTF{#1}% IF <overlay-specification> given
+	{\onslide<#1>\old@overbrace{\onslide<1->#2}^{#3}\onslide}%
+	{\old@overbrace{#2}^{#3}}%
+}%
+
+\DeclareDocumentCommand{\underbracket}{d<> m e{_}}{%
+	\IfValueTF{#1}% IF <overlay-specification> given
+	{\old@underbracket{#2\onslide<#1>}_{#3}\onslide}%
+	{\old@underbracket{#2}_{#3}}%
+}%
+
+\DeclareDocumentCommand{\overbracket}{d<> m e{^}}{%
+	\IfValueTF{#1}% IF <overlay-specification> given
+	{\onslide<#1>\old@overbracket{\onslide<1->#2}^{#3}\onslide}%
+	{\old@overbracket{#2}^{#3}}%
+}%
+
+\DeclareDocumentCommand{\underset}{d<> m m}{%
+	\IfValueTF{#1}% IF <overlay-specification> given
+	{\onslide<#1>\old@underset{\onslide<1->#2}{#3}\onslide}%
+	{\old@underset{#2}{#3}}%
+}%
+
+\DeclareDocumentCommand{\overset}{d<> m m}{%
+	\IfValueTF{#1}% IF <overlay-specification> given
+	{\old@overset{#2\onslide<#1>}{#3}\onslide}%
+	{\old@overset{#2}{#3}}%
+}%
+}{} % end if beamer
+% endregion beamer-aware operators -----------------------------------------------------
+
+
+
+% region matrices ----------------------------------------------------------------------
+\newcommand{\mat}[2][c]{\begin{matrix*}[#1]#2\end{matrix*}}
+\newcommand{\pmat}[2][c]{\begin{pmatrix*}[#1]#2\end{pmatrix*}}  %override pauli-matrix
+\newcommand{\bmat}[2][c]{\begin{bmatrix*}[#1]#2\end{bmatrix*}}
+\newcommand{\arr}[2]{\begin{array}{#1}#2\end{array}}
+\newcommand{\parr}[2]{\left(\begin{array}{#1}#2\end{array}\right)}
+\newcommand{\barr}[2]{\left[\begin{array}{#1}#2\end{array}\right]}
+% Small matrices
+\newcommand{\smat}[2][c]{\begin{smallmatrix*}[#1]#2\end{smallmatrix*}}
+\newcommand{\bsmat}[2][c]{\begin{bsmallmatrix*}[#1]#2\end{bsmallmatrix*}}
+\newcommand{\psmat}[2][c]{\begin{psmallmatrix*}[#1]#2\end{psmallmatrix*}}
+%\newcommand{\smat}[1]{\begin{smallmatrix}  #1 \end{smallmatrix}}
+%\newcommand{\bsmat}[1]{\begin{bsmallmatrix} #1 \end{bsmallmatrix}}
+%\newcommand{\psmat}[1]{\begin{psmallmatrix} #1 \end{psmallmatrix}}
+% endregion matrices -------------------------------------------------------------------
+
+% region fractions ---------------------------------------------------------------------
+% \newcommand{\s}  [2]	 {\genfrac{\{}{\}}{0pt}{}{#1}{#2}}
+\newcommand{\pfrac} [2]{\left(\frac {#1}{#2}\right)}
+\newcommand{\ptfrac}[2]{\left(\tfrac{#1}{#2}\right)}
+% endregion miscelaneous ---------------------------------------------------------------
+
+% region embellishments ----------------------------------------------------------------
+% amsmath defines \hat and \Hat synonymously, we use "wide"-variants instead.
+\let\Hat=\widehat%
+\let\Bar=\overline%
+\let\Tilde=\widetilde%
+\let\Vec=\overrightarrow%
+% \renewcommand{\Hat}  [1]{\widehat  {#1}}
+% \renewcommand{\Bar}  [1]{\overline {#1}}
+% \renewcommand{\Tilde}[1]{\widetilde{#1}}
+% \renewcommand{\Vec}  [1]{\overrightarrow{#1}}
+\newcommand{\underarrow} [2] {\underset{\overset{\uparrow}{\mathclap{#2}}}{#1}}
+\newcommand{\overarrow} [2] {\overset{\overset{\mathclap{#2}}{\downarrow}}{#1}}
+% endregion embellishments -------------------------------------------------------------
+% endregion macros ---------------------------------------------------------------------
+
+
+% region characters --------------------------------------------------------------------
+% NOTE: all commands defined here should use \mathord
+\newcommand{\const}{\mathord{\text{const.}}}
+\newcommand{\NaN}{\ifmmode\mathord{\texttt{NaN}}\else\texttt{NaN}\fi}
+\newcommand{\NA}{\ifmmode\mathord{\texttt{N\!/\!A}}\else\texttt{N\!/\!A}\fi}
+\newcommand{\NAN}{\PackageError{mathoperators}{Use \string\NaN instead of \string\NAN}{}}
+\newcommand{\nan}{\PackageError{mathoperators}{Use \string\NaN instead of \string\nan}{}}
+% endregion characters -----------------------------------------------------------------
+
+
+% region binary operators --------------------------------------------------------------
+% NOTE: all commands defined here should use \mathbin
+% NOTE: consider using ⁇ instead of \? for where-operator? (\Question in stix package)
+% NOTE: Use \mathrel{?} for more space.
+% SEE: https://tex.stackexchange.com/a/38984
+\newcommand{\?}{\mathrel{\textbf{\textsf{?}}}}% where operator
+\newcommand{\defiff}{\mathrel{\overset{\text{def}}{\iff}}}% definition iff
+% endregion binary operators -----------------------------------------------------------
+
+
+% region relations ---------------------------------------------------------------------
+% NOTE: all commands defined here should use \mathrel
+% endregion relations ------------------------------------------------------------------
+
+
+% region brackets ----------------------------------------------------------------------
+% NOTE: all commands defined here should use \mathopen, \mathclose
+% endregion brackets -------------------------------------------------------------------
+
+
+% region mathoperators -----------------------------------------------------------------
+% NOTE: all commands defined here should use \DeclateMathOperator (-> \mathop)
+% region sets --------------------------------------------------------------------------
+\DeclareMathOperator{\vol}    {vol}     % volume
+\DeclareMathOperator{\Seq}    {Seq}     % sequence space
+\DeclareMathOperator{\OrdSeq} {OrdSeq}  % space of ordered sequences
+% endregion sets -----------------------------------------------------------------------
+
+% region functions ---------------------------------------------------------------------
+\DeclareMathOperator{\Fun}    {Fun}   % space of  functions
+\DeclareMathOperator{\dom}    {dom}   % domain
+\DeclareMathOperator{\codom}  {codom} % codomain
+\DeclareMathOperator{\im}     {im}    % image
+\DeclareMathOperator{\range}  {range} % range
+\DeclareMathOperator{\dist}   {dist}  % distance metric
+\DeclareMathOperator{\supp}   {supp}  % support
+\DeclareMathOperator{\Sim}    {sim}   % similarity
+% endregion functions ------------------------------------------------------------------
+
+
+% region Linear Algebra ----------------------------------------------------------------
+% constants
+\DeclareMathOperator{\eye}   {\mathbb{I}} % identity tensor
+\DeclareMathOperator{\ones}  {\mathbb{1}} % all-ones tensor
+\DeclareMathOperator{\zeros} {\mathbb{0}} % all-zeros tensor
+% spaces
+\DeclareMathOperator{\GL}    {GL}    % general linear group
+\DeclareMathOperator{\Lin}   {Lin}   % space of linear functions
+\DeclareMathOperator{\Mat}   {Mat}   % space of matrices
+\DeclareMathOperator{\Ker}   {Ker}   % kernel of matrix
+% induced sets
+\DeclareMathOperator{\Span}  {span}  % linear span
+\DeclareMathOperator{\Aff}   {aff}   % affine  hull
+\DeclareMathOperator{\Conv}  {conv}  % convex  hull
+\DeclareMathOperator{\Cone}  {cone}  % conical hull
+% functions of matrices
+\DeclareMathOperator{\diag}  {diag}  % diagonal of matrix or vector
+\DeclareMathOperator{\spec}  {spec}  % spectrum
+\DeclareMathOperator{\tr}    {tr} trace
+\DeclareMathOperator{\trace} {trace} % trace
+\DeclareMathOperator{\rank}  {rank}  % rank
+% endregion Linear Algebra -------------------------------------------------------------
+
+% region abstract algebra --------------------------------------------------------------
+\DeclareMathOperator{\Sym}   {Sym}   % Symmetry group
+\DeclareMathOperator{\Perm}  {Perm}  % Permutation group
+\DeclareMathOperator{\Gal}   {Gal}   % Galois group
+\DeclareMathOperator{\Aut}   {Aut}   % Automorphism group
+\DeclareMathOperator{\charK} {char}  % Field characteristic
+% endregion abstract algebra -----------------------------------------------------------
+
+
+
+% region optimization ------------------------------------------------------------------
+\DeclareMathOperator*{\minimize} {minimize}
+\DeclareMathOperator*{\maximize} {maximize}
+\DeclareMathOperator*{\argmin}   {arg\,min}% argumentum minimi
+\DeclareMathOperator*{\argmax}   {arg\,max}% argumentum maximi
+\DeclareMathOperator*{\esssup}   {ess\,sup}% essential supremum
+\DeclareMathOperator*{\essinf}   {ess\,inf}% essential infimum
+% endregion optimization ---------------------------------------------------------------
+
+
+%region calculus -----------------------------------------------------------------------
+\DeclareMathOperator{\Hess}{H}% Hessian
+%endregion calculus --------------------------------------------------------------------
+
+
+% region probability -------------------------------------------------------------------
+\DeclareMathOperator{\E}     {\mathbf{E}}  % Expected value
+\DeclareMathOperator{\cov}   {cov}         % covariance
+\DeclareMathOperator{\corr}  {corr}        % correlation
+\DeclareMathOperator{\Var}   {Var}         % Variance
+\DeclareMathOperator{\Bias}  {Bias}        % Bias
+\DeclareMathOperator{\mean}  {mean}        % Mean
+\DeclareMathOperator{\median}{median}      % Median
+\DeclareMathOperator{\Mode}  {mode}        % Mode
+% distributions
+\DeclareMathOperator{\Ber}   {Ber}           % Bernoulli distribution
+\DeclareMathOperator{\Cat}   {Cat}           % Categorical distribution
+\DeclareMathOperator{\Dir}   {Dir}           % Dirichlet distribution
+\DeclareMathOperator{\Exp}   {Exp}           % Exponential distribution
+\DeclareMathOperator{\Gam}   {\Gamma}        % Gamma distribution
+\DeclareMathOperator{\Lap}   {Lap}           % Laplace distribution
+\DeclareMathOperator{\Mul}   {Mul}           % Multinomial distribution
+\DeclareMathOperator{\Poi}   {Poi}           % Poisson distribution
+\DeclareMathOperator{\Unif}  {\mathbf{Unif}} % Uniform distribution
+% endregion probability ----------------------------------------------------------------
+
+
+
+% region special functions -------------------------------------------------------------
+\DeclareMathOperator{\one}    {\mathds{1}} % indicator
+\DeclareMathOperator{\id}     {id}         % identity
+\DeclareMathOperator{\sign}   {sign}       % signum
+\DeclareMathOperator{\rect}   {rect}       % rect function
+\DeclareMathOperator{\erf}    {erf}        % error function
+\DeclareMathOperator{\erfc}   {erfc}       % complementary error function
+\DeclareMathOperator{\sinc}   {sinc}       % sinus cardinalis function
+\DeclareMathOperator{\arsinh} {arsinh}     % inverse hyperbolic trigonometric functions
+\DeclareMathOperator{\arcosh} {arcosh}     % inverse hyperbolic trigonometric functions
+\DeclareMathOperator{\artanh} {artanh}     % inverse hyperbolic trigonometric functions
+\DeclareMathOperator{\atan2}  {atan2}      % two-argument inverse tangent
+% endregion special functions ----------------------------------------------------------
+
+
+
+
+% region Machine Learning --------------------------------------------------------------
+% operators
+\DeclareMathOperator{\err}  {err} % error term
+\DeclareMathOperator{\clip} {clip} % clipping operator
+\DeclareMathOperator{\prox} {prox} % proximal operator
+\DeclareMathOperator{\proj} {proj} % projection operator
+\DeclareMathOperator{\soft} {soft} % soft thresholding operator
+\DeclareMathOperator{\hard} {hard} % hard thresholding operator
+% activation functions
+\DeclareMathOperator{\relu}     {\textsc{R}e\textsc{lu}}
+\DeclareMathOperator{\leakyrelu}{\textsc{L}eaky\textsc{R}e\textsc{lu}}
+\DeclareMathOperator{\elu}      {\textsc{E}xponential\textsc{L}inear\textsc{U}nit}
+\DeclareMathOperator{\selu}     {\textsc{S}caled\textsc{E}xponential\textsc{L}inear\textsc{U}nit}
+\DeclareMathOperator{\softsign} {softsign}
+\DeclareMathOperator{\harshrink}{hardshrink}
+\DeclareMathOperator{\sigmoid}  {sigmoid}
+\DeclareMathOperator{\softmax}  {softmax}
+\DeclareMathOperator{\softplus} {softplus}
+\DeclareMathOperator{\logit}    {logit}
+\DeclareMathOperator{\probit}   {probit}
+% model components
+\DeclareMathOperator{\enc}{enc}  % encoder
+\DeclareMathOperator{\dec}{dec}  % decoder
+\DeclareMathOperator{\Att}{Att}  % Attention
+\DeclareMathOperator{\Emb}{Emb}  % Embedding
+% model types
+\DeclareMathOperator{\CNN}{CNN}  % Convolutional neural network
+\DeclareMathOperator{\FFN}{FFN}  % Feed forward network
+\DeclareMathOperator{\GAT}{GAT}  % Graph attention network
+\DeclareMathOperator{\GCN}{GCN}  % Graph convolutional network
+\DeclareMathOperator{\GNN}{GNN}  % Graph neural network
+\DeclareMathOperator{\MLP}{MLP}  % Multilayer perceptron
+% RNNs
+\DeclareMathOperator{\GRU}      {GRU}       % Gated recurrent unit
+\DeclareMathOperator{\LSTM}     {LSTM}      % Long short-term memory
+\DeclareMathOperator{\RNN}      {RNN}       % Recurrent neural network
+\DeclareMathOperator{\GRUCell}  {GRUCell}   % Gated recurrent unit cell
+\DeclareMathOperator{\LSTMCell} {LSTMCell}  % Long short-term memory cell
+\DeclareMathOperator{\RNNCell}  {RNNCell}   % Recurrent neural network cell
+% loss functions
+\DeclareMathOperator*{\AUC}  {AUC}   % Area under curve
+\DeclareMathOperator*{\CRPS} {CRPS}  % Continuous ranked probability score
+\DeclareMathOperator*{\ELBO} {ELBO}  % Evidence lower bound
+\DeclareMathOperator*{\KL}   {D_\textsc{kl}}% Kullback-Leibler divergence
+\DeclareMathOperator*{\MAE}  {MAE}   % Mean absolute error
+\DeclareMathOperator*{\MSE}  {MSE}   % Mean squared error
+\DeclareMathOperator*{\NJNLL}{NJNLL} % Normalized joint negative log-likelihood
+\DeclareMathOperator*{\NLL}  {NLL}   % Negative log-likelihood
+\DeclareMathOperator*{\QL}   {QL}    % Quantile loss
+\DeclareMathOperator*{\RMAE} {RMAE}  % Relative mean absolute error
+\DeclareMathOperator*{\RMSE} {RMSE}  % Root mean squared error
+\DeclareMathOperator*{\RSS}  {RSS}   % Residual sum of squares
+% endregion Machine Learning -----------------------------------------------------------
+% endregion mathoperators --------------------------------------------------------------
+\endinput
