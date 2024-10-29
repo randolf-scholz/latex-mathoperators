@@ -11,7 +11,7 @@
 % INCOMPATIBLE:
 \def\error@physics@incompatible{%
 	\@ifpackageloaded{physics}{% incompatible with physics package
-		\PackageError{mathoperators}{
+		\PackageError{mathoperators}{%
 			The physics package is incompatible with the mathoperators package.
 			Consider using physics2 instead.
 		}{}
@@ -19,7 +19,7 @@
 }
 
 % Check both now and at the end of the preamble
-\error@physics@incompatible
+\error@physics@incompatible%
 \AtEndPreamble{\error@physics@incompatible}
 
 % REQUIREMENTS:
@@ -198,12 +198,15 @@
 
 % region functions ---------------------------------------------------------------------
 \DeclareMathOperator{\Fun}    {Fun}   % space of  functions
+\DeclareMathOperator{\Lip}    {Lip}   % Lipschitz functions
+
 \DeclareMathOperator{\dom}    {dom}   % domain
 \DeclareMathOperator{\codom}  {codom} % codomain
 \DeclareMathOperator{\im}     {im}    % image
 \DeclareMathOperator{\range}  {range} % range
-\DeclareMathOperator{\dist}   {dist}  % distance metric
 \DeclareMathOperator{\supp}   {supp}  % support
+
+\DeclareMathOperator{\dist}   {dist}  % distance metric
 \DeclareMathOperator{\Sim}    {sim}   % similarity
 % endregion functions ------------------------------------------------------------------
 
@@ -220,9 +223,10 @@
 \DeclareMathOperator{\Ker}   {Ker}   % kernel of matrix
 % induced sets
 \DeclareMathOperator{\Span}  {span}  % linear span
-\DeclareMathOperator{\Aff}   {aff}   % affine  hull
-\DeclareMathOperator{\Conv}  {conv}  % convex  hull
-\DeclareMathOperator{\Cone}  {cone}  % conical hull
+\DeclareMathOperator{\aff}   {aff}   % affine  hull
+\DeclareMathOperator{\conv}  {conv}  % convex  hull
+\DeclareMathOperator{\cone}  {cone}  % conical hull
+\DeclareMathOperator{\proj}  {proj}  % projection operator
 % functions of matrices
 \DeclareMathOperator{\diag}  {diag}  % diagonal of matrix or vector
 \DeclareMathOperator{\spec}  {spec}  % spectrum
@@ -232,13 +236,13 @@
 % endregion Linear Algebra -------------------------------------------------------------
 
 % region abstract algebra --------------------------------------------------------------
+\DeclareMathOperator{\Hom}   {Hom}   % Homomorphism
 \DeclareMathOperator{\Sym}   {Sym}   % Symmetry group
 \DeclareMathOperator{\Perm}  {Perm}  % Permutation group
 \DeclareMathOperator{\Gal}   {Gal}   % Galois group
 \DeclareMathOperator{\Aut}   {Aut}   % Automorphism group
 \DeclareMathOperator{\charK} {char}  % Field characteristic
 % endregion abstract algebra -----------------------------------------------------------
-
 
 
 % region optimization ------------------------------------------------------------------
@@ -298,10 +302,8 @@
 
 % region Machine Learning --------------------------------------------------------------
 % operators
-\DeclareMathOperator{\err}  {err} % error term
 \DeclareMathOperator{\clip} {clip} % clipping operator
 \DeclareMathOperator{\prox} {prox} % proximal operator
-\DeclareMathOperator{\proj} {proj} % projection operator
 \DeclareMathOperator{\soft} {soft} % soft thresholding operator
 \DeclareMathOperator{\hard} {hard} % hard thresholding operator
 % activation functions
