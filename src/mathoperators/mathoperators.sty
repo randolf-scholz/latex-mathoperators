@@ -1,32 +1,6 @@
 % chktex-file 41
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{mathoperators}[2024/09/17]
-% NOTE: This package provides:
-% 1. Math Operators such as trace, diag, etc.
-% 2. Some specialized commands for linear algebra, probability, optimization, etc.
-% It does not provide any commands whose sole use is to type special symbols such as ≝ or ≙.
-% For such symbols, see the unicode-symbols, stix and other packages.
-
-% region dependencies ------------------------------------------------------------------
-% INCOMPATIBLE:
-\def\error@physics@incompatible{%
-	\@ifpackageloaded{physics}{% incompatible with physics package
-		\PackageError{mathoperators}{%
-			The physics package is incompatible with the mathoperators package.
-			Consider using physics2 instead.
-		}{}
-	}
-}
-
-% Check both now and at the end of the preamble
-\error@physics@incompatible%
-\AtEndPreamble{\error@physics@incompatible}
-
-% REQUIREMENTS:
-\RequirePackage{mathtools}
-\RequirePackage{amsmath}
-\RequirePackage{xparse}
-% endregion dependencies ---------------------------------------------------------------
+\input{requirements.sty}
 
 % region macros ------------------------------------------------------------------------
 % region physics package ---------------------------------------------------------------
@@ -121,20 +95,49 @@
 
 
 % region matrices ----------------------------------------------------------------------
-\newcommand{\mat}[2][c]{\begin{matrix*}[#1]#2\end{matrix*}}
-\newcommand{\pmat}[2][c]{\begin{pmatrix*}[#1]#2\end{pmatrix*}}  %override pauli-matrix
-\newcommand{\bmat}[2][c]{\begin{bmatrix*}[#1]#2\end{bmatrix*}}
-\newcommand{\arr}[2]{\begin{array}{#1}#2\end{array}}
-\newcommand{\parr}[2]{\left(\begin{array}{#1}#2\end{array}\right)}
-\newcommand{\barr}[2]{\left[\begin{array}{#1}#2\end{array}\right]}
-% Small matrices
-\newcommand{\smat}[2][c]{\begin{smallmatrix*}[#1]#2\end{smallmatrix*}}
-\newcommand{\bsmat}[2][c]{\begin{bsmallmatrix*}[#1]#2\end{bsmallmatrix*}}
-\newcommand{\psmat}[2][c]{\begin{psmallmatrix*}[#1]#2\end{psmallmatrix*}}
-%\newcommand{\smat}[1]{\begin{smallmatrix}  #1 \end{smallmatrix}}
-%\newcommand{\bsmat}[1]{\begin{bsmallmatrix} #1 \end{bsmallmatrix}}
-%\newcommand{\psmat}[1]{\begin{psmallmatrix} #1 \end{psmallmatrix}}
+% Note: *-variant provides extra argument for alignment
+% angle brakets ⟨A⟩
+\NewDocumentEnvironment{amatrix}{m}{%
+	\left\langle\begin{matrix}#1%
+}{\end{matrix}\right\rangle}
+\NewDocumentEnvironment{amatrix*}{O{c} m}{%
+	\left\langle\begin{matrix*}[#1]#2%
+}{\end{matrix*}\right\rangle}
+
+\NewDocumentCommand\mat{O{c} m}{\begin{matrix*}[#1]#2\end{matrix*}}% blank matrix
+\NewDocumentCommand\pmat{O{c} m}{\begin{pmatrix*}[#1]#2\end{pmatrix*}}% (A) (parentheses)
+\NewDocumentCommand\bmat{O{c} m}{\begin{bmatrix*}[#1]#2\end{bmatrix*}}% [A] (bracket)
+\NewDocumentCommand\vmat{O{c} m}{\begin{vmatrix*}[#1]#2\end{vmatrix*}}% |A| (vertical)
+\NewDocumentCommand\cmat{O{c} m}{\begin{Bmatrix*}[#1]#2\end{Bmatrix*}}% {A} (curly)
+\NewDocumentCommand\nmat{O{c} m}{\begin{Vmatrix*}[#1]#2\end{Vmatrix*}}% ‖A‖ (norm)
+\NewDocumentCommand\amat{O{c} m}{\begin{amatrix*}[#1]#2\end{amatrix*}}% ⟨A⟩ (angle)
 % endregion matrices -------------------------------------------------------------------
+
+% region smallmatrix -------------------------------------------------------------------
+\NewDocumentEnvironment{asmallmatrix}{m}{%
+	\left\langle\begin{smallmatrix}#1%
+}{\end{smallmatrix}\right\rangle}
+\NewDocumentEnvironment{asmallmatrix*}{O{c} m}{%
+	\left\langle\begin{smallmatrix*}[#1]#2%
+}{\end{smallmatrix*}\right\rangle}
+\NewDocumentCommand\smat{O{c} m}{\begin{smallmatrix*}[#1]#2\end{smallmatrix*}}
+\NewDocumentCommand\psmat{O{c} m}{\begin{psmallmatrix*}[#1]#2\end{psmallmatrix*}}
+\NewDocumentCommand\bsmat{O{c} m}{\begin{bsmallmatrix*}[#1]#2\end{bsmallmatrix*}}
+\NewDocumentCommand\vsmat{O{c} m}{\begin{vsmallmatrix*}[#1]#2\end{vsmallmatrix*}}
+\NewDocumentCommand\csmat{O{c} m}{\begin{Bsmallmatrix*}[#1]#2\end{Bsmallmatrix*}}
+\NewDocumentCommand\nsmat{O{c} m}{\begin{Vsmallmatrix*}[#1]#2\end{Vsmallmatrix*}}
+\NewDocumentCommand\asmat{O{c} m}{\begin{asmallmatrix*}[#1]#2\end{asmallmatrix*}}
+% endregion smallmatrix ----------------------------------------------------------------
+
+% region arrays ------------------------------------------------------------------------
+\NewDocumentCommand\arr{m m}{\begin{array}{#1}#2\end{array}}
+\NewDocumentCommand\parr{m m}{\left(\begin{array}{#1}#2\end{array}\right)}
+\NewDocumentCommand\barr{m m}{\left[\begin{array}{#1}#2\end{array}\right]}
+\NewDocumentCommand\varr{m m}{\left|\begin{array}{#1}#2\end{array}\right|}
+\NewDocumentCommand\carr{m m}{\left\{\begin{array}{#1}#2\end{array}\right\}}
+\NewDocumentCommand\narr{m m}{\left\|\begin{array}{#1}#2\end{array}\right\|}
+\NewDocumentCommand\aarr{m m}{\left\langle\begin{array}{#1}#2\end{array}\right\rangle}
+% endregion arrays ---------------------------------------------------------------------
 
 % region fractions ---------------------------------------------------------------------
 % \newcommand{\s}  [2]	 {\genfrac{\{}{\}}{0pt}{}{#1}{#2}}
@@ -352,4 +355,3 @@
 \DeclareMathOperator*{\RSS}  {RSS}   % Residual sum of squares
 % endregion Machine Learning -----------------------------------------------------------
 % endregion mathoperators --------------------------------------------------------------
-\endinput

@@ -1,6 +1,9 @@
 # Package `mathoperators`
 
-[Usage](#usage) | [Requirements](#requirements) | [Installation](#installation)
+[Usage](#usage) | [Requirements](#requirements) | [Installation](#installation) | [Changelog](CHANGELOG.md) | [License](LICENSE)
+
+This package provides a collection of math operators for LaTeX.
+It is designed as a partial replacement for the `physics` package, and provides some additional features.
 
 ## Usage
 
@@ -43,42 +46,36 @@ This package provides:
 
 ## Installation
 
-To include in a project, add this project as a submodule and create a symlink to the `mathoperators.sty` in `<git_root>/texmf/tex/latex/`:
+There are two options to install the package:
+
+### 1. Global Installation
+
+  ```bash
+  ./install.py
+  ```
+
+This will symlink the files into your `$TEXMFHOME` directory (usually `~/texmf`), making them available to all your LaTeX projects. Use `--copy` to copy the files instead of linking them.
+
+### 2. Local Installation
 
 ```bash
-git submodule add https://github.com/randolf-scholz/latex-mathoperators.git
-# create local texmf if it doesn't already exists
-mkdir -p texmf/tex/latex
-# symlink the .sty files to the local texmf folder.
-ln -s  texmf/tex/latex/mathoperators.sty  latex-mathoperators/texmf/tex/latex/mathoperators.sty
+./install.py .  # creates texmf/ in the current directory
 ```
 
-ensure when compiling that the `$TEXMFHOME` environment variable is set to `<project_root>/texmf/`:
+This will copy the files into a local `texmf` directory of the current project.
+In order for LaTeX to use the local `texmf` directory, you need to set the `TEXMFHOME` environment variable to the correct path.
 
 ```bash
-export TEXMFHOME=texmf
-latexmk main.tex
+TEXMFHOME=$(pwd)/texmf pdlatex document.tex
 ```
 
-or add `$ENV{'TEXMFHOME'}=getcwd.'/texmf/';` to your `latexmk` file (requires `use Cwd;`)
+Or, when using `latexmk` / `OverLeaf`, simply add the following line to your `.latexmkrc` file:
 
-This process can be automated with a script for all submodules:
-
-```bash
-for folder in "$PROJECT_ROOT"/dependencies/**/*/; do
-  base="$(basename "$folder")"
-  parent="$(dirname "$folder")/"
-  if [ "$base" == "texmf" ]; then
-    for file in "$folder"**; do
-      # skip directories
-      [ -d "$file" ] && continue
-      dest="$PROJECT_ROOT/${file//$parent/}"
-      echo "symlinking (relative) $(basename "$file")"
-      echo -e "\tsource: $file"
-      echo -e "\tdestination: $dest"
-      mkdir -p "$(dirname "$dest")"
-      ln -sfr "$file" "$dest"
-    done
-  fi
-done
+```perl
+use Cwd;
+$ENV{'TEXMFHOME'}=getcwd.'/texmf/';
 ```
+
+### 3. Manual Installation
+
+Copy the files from `src/` to your project directory.
