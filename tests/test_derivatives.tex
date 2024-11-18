@@ -1,0 +1,22 @@
+\documentclass{standalone}
+\usepackage{mathoperators}
+
+\begin{document}
+\(\begin{array}{ccccc}
+\\\\% dd
+	\dd{x}\dd{y} & \dd{x}\dd{y} &\dd^3{x}\dd^3{y}
+\\\\% dv
+	\dv{x} & \dv[f]{x} &\dv^3[f]{x}
+\\\\% pdv
+	\pdv{x} & \pdv[f]{x} & \pdv^3[f]{x}
+\\\\% eval
+	\eval*{f(x)}_a^b & \eval*{f(x)^H}_a^b & \eval{f(x)}_a^b
+\\\\% abs
+	\abs{x} & \abs{x^2} &
+\\\\% norm
+	\norm{x} & \norm{x^2} &
+\\\\% set
+	\set{x} & \set{x^2} &
+\\\\%
+\end{array}\)
+\end{document}

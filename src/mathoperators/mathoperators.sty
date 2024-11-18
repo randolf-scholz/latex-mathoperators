@@ -26,42 +26,33 @@
 % region macros ------------------------------------------------------------------------
 % region physics package ---------------------------------------------------------------
 % SEE: https://tex.stackexchange.com/a/60546
-\newcommand{\mathopchar}[1]{\mathop{}\!\mathrm{#1}}
-\newcommand{\dd}{\mathopchar{d}}
+\newcommand\mathopchar[1]{\mathop{}\!\mathrm{#1}}
 
-\DeclareDocumentCommand\dv{s o m g}{ % Derivative
-	% Usage: \dv{x} ⇝ d/dx,  \dv{f}{x} ⇝ df/dx,  \dv[n]{f}{x} ⇝ dⁿf/dxⁿ
+\NewDocumentCommand\dd{}{\mathopchar{d}}
+
+\NewDocumentCommand\dv{e{^} o m}{ % Derivative
+	% Usage: \dv{x} ⇝ d/dx,  \dv[f]{x} ⇝ df/dx,  \dv^n[f]{x} ⇝ dⁿf/dxⁿ
 	% Use with \dv*{} for inline fractions
-	\def\dv@exp{\IfValueTF{#2}{^{#2}}{}}%
-	\def\dv@num{\IfValueTF{#4}{#3}{}}%
-	\def\dv@den{\IfValueTF{#4}{#4}{#3}}%
-	\IfBooleanTF{#1}{% inline
-		\frac{\dd\dv@exp\dv@num}{\dd\dv@den\dv@exp}%
-	}{% display
-		\frac{\dd\dv@exp\dv@num}{\dd\dv@den\dv@exp}%
-	}%
+	\def\dv@exp{\IfValueTF{#1}{^{#1}\!}{}}%
+	\def\dv@num{\IfValueTF{#2}{#2}{}}%
+	\frac{\dd\dv@exp\dv@num}{\dd#3\dv@exp}%
 }
 
-\DeclareDocumentCommand\pdv{s o m g}{ % Partial derivative
-	% Usage: \pdv{}{x}⇝ ∂/∂x,  \pdv{f}{x} ⇝ ∂f/∂x,  \pdv[n]{f}{x} ⇝ ∂ⁿ f/∂xⁿ
+\NewDocumentCommand\pdv{e{^} o m}{ % Partial derivative
+	% Usage: \pdv{x}⇝ ∂/∂x,  \pdv[f]{x} ⇝ ∂f/∂x,  \pdv^n[f]{x} ⇝ ∂ⁿ f/∂xⁿ
 	% Use with \pdv*{} for inline fractions
-	\def\pdv@exp{\IfValueTF{#2}{^{#2}}{}}%
-	\def\pdv@num{\IfValueTF{#4}{#3}{}}%
-	\def\pdv@den{\IfValueTF{#4}{#4}{#3}}%
-	\IfBooleanTF{#1}{% inline
-		\frac{\partial\pdv@exp\pdv@num}{\partial\pdv@den\pdv@exp}%
-	}{% display
-		\frac{\partial\pdv@exp\pdv@num}{\partial\pdv@den\pdv@exp}%
-	}%
+	\def\pdv@exp{\IfValueTF{#1}{^{#1}\!}{}}%
+	\def\pdv@num{\IfValueTF{#2}{#2}{}}%
+	\frac{\partial\pdv@exp\pdv@num}{\partial#3\pdv@exp}%
 }
+\NewDocumentCommand\qq{s m}{\IfBooleanTF{#1}{}{\quad}\text{#2}\quad}
 
-\DeclareDocumentCommand\eval{s m}{ % Vertical evaluation bar
-	\IfBooleanTF{#1}% IF starred
-	{\left.#2\right\rvert}%
-	{#2\rvert}%
-}
-
-\DeclareDocumentCommand\qq{ s m }{\IfBooleanTF{#1}{}{\quad}\text{#2}\quad}
+% bracketing
+\NewDocumentCommand\eval{m}{\left.#1\right\rvert}
+\NewDocumentCommand\abs{m}{\left\lvert#1\right\rvert}
+\NewDocumentCommand\norm{m}{\left\lVert#1\right\rVert}
+\NewDocumentCommand\set{m}{\left\{#1\right\}}
+\NewDocumentCommand\tuple{m}{\left(#1\right)}
 % endregion physics package ------------------------------------------------------------
 
 
@@ -118,12 +109,13 @@
 % region matrices ----------------------------------------------------------------------
 % Note: *-variant provides extra argument for alignment
 % angle brakets ⟨A⟩
-\NewDocumentEnvironment{amatrix}{m}{%
-	\left\langle\begin{matrix}#1%
-}{\end{matrix}\right\rangle}
-\NewDocumentEnvironment{amatrix*}{O{c} m}{%
-	\left\langle\begin{matrix*}[#1]#2%
-}{\end{matrix*}\right\rangle}
+\NewDocumentEnvironment{amatrix}{m}
+	{\left\langle\begin{matrix}#1}
+	{\end{matrix}\right\rangle}
+
+\NewDocumentEnvironment{amatrix*}{O{c} m}
+	{\left\langle\begin{matrix*}[#1]#2}
+	{\end{matrix*}\right\rangle}
 
 \NewDocumentCommand\mat{O{c} m}{\begin{matrix*}[#1]#2\end{matrix*}}% blank matrix
 \NewDocumentCommand\pmat{O{c} m}{\begin{pmatrix*}[#1]#2\end{pmatrix*}}% (A) (parentheses)
@@ -135,12 +127,14 @@
 % endregion matrices -------------------------------------------------------------------
 
 % region smallmatrix -------------------------------------------------------------------
-\NewDocumentEnvironment{asmallmatrix}{m}{%
-	\left\langle\begin{smallmatrix}#1%
-}{\end{smallmatrix}\right\rangle}
-\NewDocumentEnvironment{asmallmatrix*}{O{c} m}{%
-	\left\langle\begin{smallmatrix*}[#1]#2%
-}{\end{smallmatrix*}\right\rangle}
+\NewDocumentEnvironment{asmallmatrix}{m}
+	{\left\langle\begin{smallmatrix}#1}
+	{\end{smallmatrix}\right\rangle}
+
+\NewDocumentEnvironment{asmallmatrix*}{O{c} m}
+	{left\langle\begin{smallmatrix*}[#1]#2}
+	{\end{smallmatrix*}\right\rangle}
+
 \NewDocumentCommand\smat{O{c} m}{\begin{smallmatrix*}[#1]#2\end{smallmatrix*}}
 \NewDocumentCommand\psmat{O{c} m}{\begin{psmallmatrix*}[#1]#2\end{psmallmatrix*}}
 \NewDocumentCommand\bsmat{O{c} m}{\begin{bsmallmatrix*}[#1]#2\end{bsmallmatrix*}}
