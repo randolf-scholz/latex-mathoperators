@@ -1,6 +1,27 @@
 % chktex-file 41
-\NeedsTeXFormat{LaTeX2e}
-\input{requirements.sty}
+\ProvidesPackage{mathoperators}[2024-11-15]% chktex 8
+% region requirements ------------------------------------------------------------------
+\NeedsTeXFormat{LaTeX2e}[2024-06-01]% chktex 8
+\RequirePackage{mathtools}
+
+% Check for the physics package
+\@ifpackageloaded{physics}{% incompatible with physics package
+\PackageError{mathoperators}{%
+	The physics package is incompatible with the mathoperators package.
+	Consider using physics2 instead.
+}{}
+}
+
+% Check for the physics package again at the end of the preamble
+\AtEndOfPackage{%
+\@ifpackageloaded{physics}{% incompatible with physics package
+	\PackageError{mathoperators}{%
+		The physics package is incompatible with the mathoperators package.
+		Consider using physics2 instead.
+	}{}
+}
+}
+% endregion requirements ---------------------------------------------------------------
 
 % region macros ------------------------------------------------------------------------
 % region physics package ---------------------------------------------------------------
@@ -36,7 +57,7 @@
 
 \DeclareDocumentCommand\eval{s m}{ % Vertical evaluation bar
 	\IfBooleanTF{#1}% IF starred
-	{\left.#2\right|}%
+	{\left.#2\right\rvert}%
 	{#2\rvert}%
 }
 
@@ -130,12 +151,13 @@
 % endregion smallmatrix ----------------------------------------------------------------
 
 % region arrays ------------------------------------------------------------------------
+%  NOTE: use \lvert and \rvert instead of | for better spacing
 \NewDocumentCommand\arr{m m}{\begin{array}{#1}#2\end{array}}
 \NewDocumentCommand\parr{m m}{\left(\begin{array}{#1}#2\end{array}\right)}
 \NewDocumentCommand\barr{m m}{\left[\begin{array}{#1}#2\end{array}\right]}
-\NewDocumentCommand\varr{m m}{\left|\begin{array}{#1}#2\end{array}\right|}
+\NewDocumentCommand\varr{m m}{\left\lvert\begin{array}{#1}#2\end{array}\right\rvert}
 \NewDocumentCommand\carr{m m}{\left\{\begin{array}{#1}#2\end{array}\right\}}
-\NewDocumentCommand\narr{m m}{\left\|\begin{array}{#1}#2\end{array}\right\|}
+\NewDocumentCommand\narr{m m}{\left\lVert\begin{array}{#1}#2\end{array}\right\rVert}
 \NewDocumentCommand\aarr{m m}{\left\langle\begin{array}{#1}#2\end{array}\right\rangle}
 % endregion arrays ---------------------------------------------------------------------
 
@@ -163,7 +185,8 @@
 
 % region characters --------------------------------------------------------------------
 % NOTE: all commands defined here should use \mathord
-\newcommand{\const}{\mathord{\text{const.}}}
+\newcommand{\const}{\mathord{\text{const.}}}% constant
+\newcommand{\iid}{\mathord{text{iid}}} % independent and identically distributed
 \newcommand{\NaN}{\ifmmode\mathord{\texttt{NaN}}\else\texttt{NaN}\fi}
 \newcommand{\NA}{\ifmmode\mathord{\texttt{N\!/\!A}}\else\texttt{N\!/\!A}\fi}
 \newcommand{\NAN}{\PackageError{mathoperators}{Use \string\NaN instead of \string\NAN}{}}
@@ -241,12 +264,11 @@
 % region abstract algebra --------------------------------------------------------------
 \DeclareMathOperator{\Hom}   {Hom}   % Homomorphism
 \DeclareMathOperator{\Sym}   {Sym}   % Symmetry group
-\DeclareMathOperator{\Perm}  {Perm}  % Permutation group
 \DeclareMathOperator{\Gal}   {Gal}   % Galois group
 \DeclareMathOperator{\Aut}   {Aut}   % Automorphism group
+\DeclareMathOperator{\Alt}   {Alt}   % Alternating group
 \DeclareMathOperator{\charK} {char}  % Field characteristic
 % endregion abstract algebra -----------------------------------------------------------
-
 
 % region optimization ------------------------------------------------------------------
 \DeclareMathOperator*{\minimize} {minimize}
@@ -259,6 +281,7 @@
 
 
 %region calculus -----------------------------------------------------------------------
+\DeclareMathOperator{\Jac}{J}% Jacobian
 \DeclareMathOperator{\Hess}{H}% Hessian
 %endregion calculus --------------------------------------------------------------------
 
@@ -269,8 +292,10 @@
 \DeclareMathOperator{\corr}  {corr}        % correlation
 \DeclareMathOperator{\Var}   {Var}         % Variance
 \DeclareMathOperator{\Bias}  {Bias}        % Bias
-\DeclareMathOperator{\mean}  {mean}        % Mean
 \DeclareMathOperator{\median}{median}      % Median
+\DeclareMathOperator{\avg}   {avg}         % Average
+\DeclareMathOperator{\mean}  {mean}        % Mean
+\DeclareMathOperator{\std}   {std}         % Standard deviation
 \DeclareMathOperator{\Mode}  {mode}        % Mode
 % distributions
 \DeclareMathOperator{\Ber}   {Ber}           % Bernoulli distribution
@@ -345,11 +370,11 @@
 \DeclareMathOperator*{\CRPS} {CRPS}  % Continuous ranked probability score
 \DeclareMathOperator*{\ELBO} {ELBO}  % Evidence lower bound
 \DeclareMathOperator*{\KL}   {D_\textsc{kl}}% Kullback-Leibler divergence
-\DeclareMathOperator*{\MAE}  {MAE}   % Mean absolute error
-\DeclareMathOperator*{\MSE}  {MSE}   % Mean squared error
 \DeclareMathOperator*{\NJNLL}{NJNLL} % Normalized joint negative log-likelihood
 \DeclareMathOperator*{\NLL}  {NLL}   % Negative log-likelihood
 \DeclareMathOperator*{\QL}   {QL}    % Quantile loss
+\DeclareMathOperator*{\MAE}  {MAE}   % Mean absolute error
+\DeclareMathOperator*{\MSE}  {MSE}   % Mean squared error
 \DeclareMathOperator*{\RMAE} {RMAE}  % Relative mean absolute error
 \DeclareMathOperator*{\RMSE} {RMSE}  % Root mean squared error
 \DeclareMathOperator*{\RSS}  {RSS}   % Residual sum of squares
