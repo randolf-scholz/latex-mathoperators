@@ -26,7 +26,7 @@
 % region macros ------------------------------------------------------------------------
 % region physics package ---------------------------------------------------------------
 % SEE: https://tex.stackexchange.com/a/60546
-\newcommand\mathopchar[1]{\mathop{}\!\mathrm{#1}}
+\NewDocumentCommand\mathopchar{m}{\mathop{}\!\mathrm{#1}}
 
 \NewDocumentCommand\dd{}{\mathopchar{d}}
 
@@ -48,11 +48,22 @@
 \NewDocumentCommand\qq{s m}{\IfBooleanTF{#1}{}{\quad}\text{#2}\quad}
 
 % bracketing
-\NewDocumentCommand\eval{m}{\left.#1\right\rvert}
-\NewDocumentCommand\abs{m}{\left\lvert#1\right\rvert}
-\NewDocumentCommand\norm{m}{\left\lVert#1\right\rVert}
-\NewDocumentCommand\set{m}{\left\{#1\right\}}
-\NewDocumentCommand\tuple{m}{\left(#1\right)}
+\NewDocumentCommand\eval{m}{\left.#1\right\rvert}  % x| evaluate at
+\NewDocumentCommand\abs{m}{\left\lvert#1\right\rvert}  % |x| - absolute value
+\NewDocumentCommand\ceil{m}{\left\lceil#1\right\rceil}  % ⌈x⌉ - ceiling
+\NewDocumentCommand\floor{m}{\left\lfloor#1\right\rfloor}  % ⌊x⌋ - floor
+\NewDocumentCommand\norm{m}{\left\lVert#1\right\rVert}  % ‖x‖ - norm
+\NewDocumentCommand\set{m}{\left\{#1\right\}}  % {x} set
+\NewDocumentCommand\tuple{m}{\left(#1\right)}  % (x) tuple
+\NewDocumentCommand\seq{m}{\left(#1\right)}  % (x) sequence
+\NewDocumentCommand\gen{m}{\left\langle#1\right\rangle}  % ⟨x⟩ - generated group
+
+\NewDocumentCommand\ket{m}{\left\lvert#1\right\rangle}  % |x⟩ - ket vector
+\NewDocumentCommand\bra{m}{\left\langle#1\right\rvert}  % ⟨x| - bra vector
+\NewDocumentCommand\braket{m m}{\left\langle #1 \middle\vert #2 \right\rangle}  % ⟨x|y⟩ - braket
+\NewDocumentCommand\ketbra{m m}{\left\lvert#1\middle\rangle\middle\langle#2\right\rvert}  % |x⟩⟨y| - ketbra
+\NewCommandCopy{\inner}{\braket}
+\NewCommandCopy{\dyad}{\ketbra}% \outer not available
 % endregion physics package ------------------------------------------------------------
 
 
@@ -156,35 +167,33 @@
 % endregion arrays ---------------------------------------------------------------------
 
 % region fractions ---------------------------------------------------------------------
-% \newcommand{\s}  [2]	 {\genfrac{\{}{\}}{0pt}{}{#1}{#2}}
-\newcommand{\pfrac} [2]{\left(\frac {#1}{#2}\right)}
-\newcommand{\ptfrac}[2]{\left(\tfrac{#1}{#2}\right)}
+\NewDocumentCommand{\pfrac} {m m}{\left(\frac {#1}{#2}\right)}
+\NewDocumentCommand{\ptfrac}{m m}{\left(\tfrac{#1}{#2}\right)}
 % endregion miscelaneous ---------------------------------------------------------------
 
 % region embellishments ----------------------------------------------------------------
-% amsmath defines \hat and \Hat synonymously, we use "wide"-variants instead.
-\let\Hat=\widehat%
-\let\Bar=\overline%
-\let\Tilde=\widetilde%
-\let\Vec=\overrightarrow%
-% \renewcommand{\Hat}  [1]{\widehat  {#1}}
-% \renewcommand{\Bar}  [1]{\overline {#1}}
-% \renewcommand{\Tilde}[1]{\widetilde{#1}}
-% \renewcommand{\Vec}  [1]{\overrightarrow{#1}}
-\newcommand{\underarrow} [2] {\underset{\overset{\uparrow}{\mathclap{#2}}}{#1}}
-\newcommand{\overarrow} [2] {\overset{\overset{\mathclap{#2}}{\downarrow}}{#1}}
+% NOTE: amsmath aliases \Hat -> \hat, we override this behavior
+\RenewCommandCopy{\Hat}{\widehat}%
+\RenewCommandCopy{\Bar}{\overline}%
+\RenewCommandCopy{\Tilde}{\widetilde}%
+\RenewCommandCopy{\Vec}{\overrightarrow}%
+
+\NewDocumentCommand{\underuparrow}{m m}{\underset{\overset{\uparrow}{\mathclap{#2}}}{#1}}  % a with ↑b below
+\NewDocumentCommand{\underdownarrow}{m m}{\underset{\overset{\downarrow}{\mathclap{#2}}}{#1}}  % a with ↓b below
+\NewDocumentCommand{\overuparrow}{m m}{\overset{\overset{\mathclap{#2}}{\uparrow}}{#1}}  % a with ↑b above
+\NewDocumentCommand{\overdownarrow}{m m}{\overset{\overset{\mathclap{#2}}{\downarrow}}{#1}}  % a with ↓b above
 % endregion embellishments -------------------------------------------------------------
 % endregion macros ---------------------------------------------------------------------
 
 
 % region characters --------------------------------------------------------------------
 % NOTE: all commands defined here should use \mathord
-\newcommand{\const}{\mathord{\text{const.}}}% constant
-\newcommand{\iid}{\mathord{text{iid}}} % independent and identically distributed
-\newcommand{\NaN}{\ifmmode\mathord{\texttt{NaN}}\else\texttt{NaN}\fi}
-\newcommand{\NA}{\ifmmode\mathord{\texttt{N\!/\!A}}\else\texttt{N\!/\!A}\fi}
-\newcommand{\NAN}{\PackageError{mathoperators}{Use \string\NaN instead of \string\NAN}{}}
-\newcommand{\nan}{\PackageError{mathoperators}{Use \string\NaN instead of \string\nan}{}}
+\NewDocumentCommand{\const}{}{\mathord{\text{const.}}}% constant
+\NewDocumentCommand{\iid}{}{\mathord{text{iid}}} % independent and identically distributed
+\NewDocumentCommand{\NA}{}{\ifmmode\mathord{\texttt{N\!/\!A}}\else\texttt{N\!/\!A}\fi}
+\NewDocumentCommand{\NaN}{}{\ifmmode\mathord{\texttt{NaN}}\else\texttt{NaN}\fi}
+\NewCommandCopy{\NAN}{\NaN}
+\NewCommandCopy{\nan}{\NaN}
 % endregion characters -----------------------------------------------------------------
 
 
@@ -193,8 +202,8 @@
 % NOTE: consider using ⁇ instead of \? for where-operator? (\Question in stix package)
 % NOTE: Use \mathrel{?} for more space.
 % SEE: https://tex.stackexchange.com/a/38984
-\newcommand{\?}{\mathrel{\textbf{\textsf{?}}}}% where operator
-\newcommand{\defiff}{\mathrel{\overset{\text{def}}{\iff}}}% definition iff
+\NewDocumentCommand{\?}{}{\mathrel{\textbf{\textsf{?}}}}% where operator
+\NewDocumentCommand{\defiff}{}{\mathrel{\overset{\text{def}}{\iff}}}% definition iff
 % endregion binary operators -----------------------------------------------------------
 
 
