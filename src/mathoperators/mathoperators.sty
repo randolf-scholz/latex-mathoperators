@@ -12,8 +12,8 @@
 }{}
 }
 
-% Check for the physics package again at the end of the preamble
-\AtEndOfPackage{%
+% Check again for the physics package at the end of the preamble
+\AtBeginDocument{%
 \@ifpackageloaded{physics}{% incompatible with physics package
 	\PackageError{mathoperators}{%
 		The physics package is incompatible with the mathoperators package.
@@ -22,6 +22,17 @@
 }
 }
 % endregion requirements ---------------------------------------------------------------
+
+% region options -----------------------------------------------------------------------
+% defaults:
+% \def\mathop@expectation{\mathbf{E}}
+% \def\mathop@variance{\mathbf{Var}}
+
+% \DeclareKeys{mathoperators}{
+% 	probability.expectation.store = \mathop@expectation,
+% 	probability.variance.store	= \mathop@variance,
+% }
+% endregion options --------------------------------------------------------------------
 
 % region macros ------------------------------------------------------------------------
 % region physics package ---------------------------------------------------------------
@@ -143,16 +154,16 @@
 	{\end{smallmatrix}\right\rangle}
 
 \NewDocumentEnvironment{asmallmatrix*}{O{c} m}
-	{left\langle\begin{smallmatrix*}[#1]#2}
+	{\left\langle\begin{smallmatrix*}[#1]#2}
 	{\end{smallmatrix*}\right\rangle}
 
 \NewDocumentCommand\smat{O{c} m}{\begin{smallmatrix*}[#1]#2\end{smallmatrix*}}
-\NewDocumentCommand\psmat{O{c} m}{\begin{psmallmatrix*}[#1]#2\end{psmallmatrix*}}
-\NewDocumentCommand\bsmat{O{c} m}{\begin{bsmallmatrix*}[#1]#2\end{bsmallmatrix*}}
-\NewDocumentCommand\vsmat{O{c} m}{\begin{vsmallmatrix*}[#1]#2\end{vsmallmatrix*}}
-\NewDocumentCommand\csmat{O{c} m}{\begin{Bsmallmatrix*}[#1]#2\end{Bsmallmatrix*}}
-\NewDocumentCommand\nsmat{O{c} m}{\begin{Vsmallmatrix*}[#1]#2\end{Vsmallmatrix*}}
-\NewDocumentCommand\asmat{O{c} m}{\begin{asmallmatrix*}[#1]#2\end{asmallmatrix*}}
+\NewDocumentCommand\spmat{O{c} m}{\begin{psmallmatrix*}[#1]#2\end{psmallmatrix*}}
+\NewDocumentCommand\sbmat{O{c} m}{\begin{bsmallmatrix*}[#1]#2\end{bsmallmatrix*}}
+\NewDocumentCommand\svmat{O{c} m}{\begin{vsmallmatrix*}[#1]#2\end{vsmallmatrix*}}
+\NewDocumentCommand\scmat{O{c} m}{\begin{Bsmallmatrix*}[#1]#2\end{Bsmallmatrix*}}
+\NewDocumentCommand\snmat{O{c} m}{\begin{Vsmallmatrix*}[#1]#2\end{Vsmallmatrix*}}
+\NewDocumentCommand\samat{O{c} m}{\begin{asmallmatrix*}[#1]#2\end{asmallmatrix*}}
 % endregion smallmatrix ----------------------------------------------------------------
 
 % region arrays ------------------------------------------------------------------------
