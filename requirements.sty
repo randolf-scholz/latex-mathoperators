@@ -1,7 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}[2024-06-01]% chktex 8
 \RequirePackage{mathtools}
-\RequirePackage{xparse}
-\RequirePackage{xparse}
 
 % Check for the physics package
 \@ifpackageloaded{physics}{% incompatible with physics package
@@ -12,7 +10,7 @@
 }
 
 % Check for the physics package again at the end of the preamble
-\AtEndOfPackage{%
+\AtBeginDocument{%
 \@ifpackageloaded{physics}{% incompatible with physics package
 	\PackageError{mathoperators}{%
 		The physics package is incompatible with the mathoperators package.
