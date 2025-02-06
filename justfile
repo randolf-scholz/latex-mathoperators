@@ -11,6 +11,11 @@ export TEXMF_DIR := TEXMF_BASE_DIR + "/tex/latex"
 default:
   @just --list
 
+
+install:  # install the LaTeX package
+    cp -r src/* "$(kpsewhich -var-value TEXMFHOME)/tex/latex/"
+
+
 clean:  # remove all .build directories
     find . -type d -name '{{BUILD_DIR}}' -prune -exec rm -rf {} \;
     find . -type d -name '{{RESULT_DIR}}' -prune -exec rm -rf {} \;
@@ -72,7 +77,7 @@ test_one $file:  # compile a single test file
     padded_name=$(printf "%-32s" "$name:")
     echo -e "$padded_name pdf=$result_pdf, lua=$result_lua, xe=$result_xe"
 
-# Define the test task
+
 test $case="*":  # run all tests
     #!/usr/bin/env bash
     echo "Current directory: $PWD"

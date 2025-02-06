@@ -28,10 +28,17 @@
 % \def\mathop@expectation{\mathbf{E}}
 % \def\mathop@variance{\mathbf{Var}}
 
-% \DeclareKeys{mathoperators}{
-% 	probability.expectation.store = \mathop@expectation,
-% 	probability.variance.store	= \mathop@variance,
-% }
+\DeclareKeys[mathoperators]{
+	expectation.store	= \@mathoperators@expectation,
+	expectation.usage	= load,
+	variance.store		= \@mathoperators@variance,
+	variance.usage		= load,
+}
+\SetKeys[mathoperators]{
+	expectation={\mathbf{E}},
+	variance={Var},
+}
+\ProcessKeyOptions[mathoperators]
 % endregion options --------------------------------------------------------------------
 
 % region macros ------------------------------------------------------------------------
@@ -301,16 +308,16 @@
 
 
 % region probability -------------------------------------------------------------------
-\DeclareMathOperator{\E}     {\mathbf{E}}  % Expected value
-\DeclareMathOperator{\cov}   {cov}         % covariance
-\DeclareMathOperator{\corr}  {corr}        % correlation
-\DeclareMathOperator{\Var}   {Var}         % Variance
-\DeclareMathOperator{\Bias}  {Bias}        % Bias
-\DeclareMathOperator{\median}{median}      % Median
-\DeclareMathOperator{\avg}   {avg}         % Average
-\DeclareMathOperator{\mean}  {mean}        % Mean
-\DeclareMathOperator{\std}   {std}         % Standard deviation
-\DeclareMathOperator{\Mode}  {mode}        % Mode
+\DeclareMathOperator{\E}     {\@mathoperators@expectation}      % expectation value
+\DeclareMathOperator{\cov}   {cov}                              % covariance
+\DeclareMathOperator{\corr}  {corr}                             % correlation
+\DeclareMathOperator{\Var}   {\@mathoperators@variance}         % Variance
+\DeclareMathOperator{\Bias}  {Bias}                             % Bias
+\DeclareMathOperator{\median}{median}                           % Median
+\DeclareMathOperator{\avg}   {avg}                              % Average
+\DeclareMathOperator{\mean}  {mean}                             % Mean
+\DeclareMathOperator{\std}   {std}                              % Standard deviation
+\DeclareMathOperator{\Mode}  {mode}                             % Mode
 % distributions
 \DeclareMathOperator{\Ber}   {Ber}           % Bernoulli distribution
 \DeclareMathOperator{\Cat}   {Cat}           % Categorical distribution
