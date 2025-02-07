@@ -1,0 +1,18 @@
+- id: latex-operator-differential
+  name: latex-operator-differential
+  description: 'Checks that `\d` is used for differential.'
+- id: latex-operator-derivative
+  name: latex-operator-derivative
+  description: 'Checks that `\D` is used for derivative.'
+- id: latex-operator-expectation-value
+  name: latex-operator-expectation-value
+  description: 'Checks that `\E` is used for expectation value.'
+  language: pygrep
+  types: [tex]
+  entry: '\\math(bb|bf)\{E\}|\b(\𝐄|\𝔼|(?<!\\)E\s*(?=[\[\(\{\\]))'
+- id: latex-operator-variance
+  name: latex-operator-variance
+  description: 'Checks that `\Var` is used for variance.'
+  language: pygrep
+  types: [tex]
+  entry: '\\math(bb|bf)\{V\}|\b(\𝐕|\𝕍|(?<!\\)V\s*(?=[\[\(\{\\]))'
