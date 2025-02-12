@@ -47,20 +47,18 @@
 \NewDocumentCommand\dd{}{\mathop{}\!\mathrm{d}}% differential
 % Usage: \int f(x) \dd{x} provides better spacing and makes the d non-italic.
 
-\NewDocumentCommand\dv{e{^} o m}{% Derivative
-	% Usage: \dv{x} ⇝ d/dx,  \dv[f]{x} ⇝ df/dx,  \dv^n[f]{x} ⇝ dⁿf/dxⁿ
+\NewDocumentCommand\dv{e{^} m m}{% Derivative
+	% Usage: \dv{}{x} ⇝ d/dx,  \dv{f}{x} ⇝ df/dx,  \dv^n{f}{x} ⇝ dⁿf/dxⁿ
 	% Use with \dv*{} for inline fractions
 	\def\dv@exp{\IfValueTF{#1}{^{#1}\!}{}}%
-	\def\dv@num{\IfValueTF{#2}{#2}{}}%
-	\frac{\dd\dv@exp\dv@num}{\dd#3\dv@exp}%
+	\frac{\dd\dv@exp#2}{\dd#3\dv@exp}%
 }
 
-\NewDocumentCommand\pdv{e{^} o m}{% Partial derivative
-	% Usage: \pdv{x}⇝ ∂/∂x,  \pdv[f]{x} ⇝ ∂f/∂x,  \pdv^n[f]{x} ⇝ ∂ⁿ f/∂xⁿ
+\NewDocumentCommand\pdv{e{^} m m}{% Partial derivative
+	% Usage: \pdv{}{x}⇝ ∂/∂x,  \pdv{f}{x} ⇝ ∂f/∂x,  \pdv^n{f}{x} ⇝ ∂ⁿf/∂xⁿ
 	% Use with \pdv*{} for inline fractions
 	\def\pdv@exp{\IfValueTF{#1}{^{#1}\!}{}}%
-	\def\pdv@num{\IfValueTF{#2}{#2}{}}%
-	\frac{\partial\pdv@exp\pdv@num}{\partial#3\pdv@exp}%
+	\frac{\partial\pdv@exp#2}{\partial#3\pdv@exp}%
 }
 \NewDocumentCommand\qq{s m}{\IfBooleanTF{#1}{}{\quad}\text{#2}\quad}
 % endregion physics package ------------------------------------------------------------
@@ -114,15 +112,17 @@
 % endregion beamer-aware operators -----------------------------------------------------
 
 % TODO: Use mathtools.DeclarePairedDelimiter?
-\NewDocumentCommand\eval{m}{\left.#1\right\rvert}  % x| evaluate at
-\NewDocumentCommand\abs{m}{\left\lvert#1\right\rvert}  % |x| - absolute value
-\NewDocumentCommand\ceil{m}{\left\lceil#1\right\rceil}  % ⌈x⌉ - ceiling
-\NewDocumentCommand\floor{m}{\left\lfloor#1\right\rfloor}  % ⌊x⌋ - floor
-\NewDocumentCommand\norm{m}{\left\lVert#1\right\rVert}  % ‖x‖ - norm
-\NewDocumentCommand\set{m}{\left\{#1\right\}}  % {x} set
-\NewDocumentCommand\tuple{m}{\left(#1\right)}  % (x) tuple
-\NewDocumentCommand\seq{m}{\left(#1\right)}  % (x) sequence
-\NewDocumentCommand\gen{m}{\left\langle#1\right\rangle}  % ⟨x⟩ - generated group
+\NewDocumentCommand{\eval}{m}{\left.#1\right\rvert}  % x| evaluate at
+\NewDocumentCommand{\abs}{m}{\left\lvert#1\right\rvert}  % |x| - absolute value
+\NewDocumentCommand{\ceil}{m}{\left\lceil#1\right\rceil}  % ⌈x⌉ - ceiling
+\NewDocumentCommand{\floor}{m}{\left\lfloor#1\right\rfloor}  % ⌊x⌋ - floor
+\NewDocumentCommand{\norm}{m}{\left\lVert#1\right\rVert}  % ‖x‖ - norm
+\NewDocumentCommand{\set}{m}{\left\{#1\right\}}  % {x} set
+\NewDocumentCommand{\tuple}{m}{\left(#1\right)}  % (x) tuple
+\NewDocumentCommand{\iverson}{m}{\left[#1\right]}  % [x] Iverson bracket
+\NewDocumentCommand{\gen}{m}{\left\langle#1\right\rangle}  % ⟨x⟩ - generated group
+\NewCommandCopy{\truth}{\iverson}% alias [x] Iverson bracket
+\NewCommandCopy{\seq}{\tuple}  % (x) sequence
 
 % bra-ket notation
 \NewDocumentCommand\ket{m}{\left\lvert#1\right\rangle}  % |x⟩ - ket vector

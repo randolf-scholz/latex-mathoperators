@@ -1,30 +1,30 @@
 - id: latex-operator-expected-value
-  name: '[tex] Use \E for expected value.'
-  description: 'Checks that `\E` is used for expected value.'
+  name: '[tex] Use `\E[x]` for expected value.'
+  description: 'Checks that `\E[x]` is used for expected value.'
   language: pygrep
   types: [tex]
   entry: '\\math(bb|bf)\{E\}|\b(\𝐄|\𝔼|(?<!\\)E\s*(?=[\[\(\{\\]))'
 - id: latex-operator-variance
-  name: '[tex] Use \Var for variance.'
-  description: 'Checks that `\Var` is used for variance.'
+  name: '[tex] Use `\Var[x]` for variance.'
+  description: 'Checks that `\Var[x]` is used for variance.'
   language: pygrep
   types: [tex]
   entry: '\\math(bb|bf)\{V\}|\b(\𝐕|\𝕍|(?<!\\)V\s*(?=[\[\(\{\\]))'
 - id: latex-operator-derivative
-  name: '[tex] Use \dv for derivatives.'
-  description: 'Checks that `\dv` is used for derivatives.'
+  name: '[tex] Use `\dv{y}{x}` for derivatives.'
+  description: 'Checks that `\dv{y}{x}` is used for derivatives.'
   language: pygrep
   types: [tex]
   entry: 'frac\s*\{\s*(d|\\mathrm\{d\})[^\}]*\}\s*\{\s*(d|\\mathrm\{d\})[^\}]*\}'
 - id: latex-operator-partial-derivative
-  name: '[tex] Use \pdv for partial derivatives.'
-  description: 'Checks that `\dv` is used for derivatives.'
+  name: '[tex] Use `\pdv{y}{x}` for partial derivatives.'
+  description: 'Checks that `\pdv{y}{x}` is used for derivatives.'
   language: pygrep
   types: [tex]
   entry: 'frac\s*\{\s*(∂|\\partial)[^\}]*\}\s*\{\s*(∂|\\partial)[^\}]*\}'
 - id: latex-operator-differential
-  name: '[tex] Use \dd{x} when defining integrals.'
-  description: 'Checks that `\dd` is used for differential.'
+  name: '[tex] Use `\dd{x}`` for integrals.'
+  description: 'Checks that `\dd{x}` is used for differentials.'
   language: pygrep
   types: [tex]
   entry: '(\\[A-Za-z]*int\b|∫|∬|∭|⨌|∮|∯|∰)(?![^\$]*?\\dd\b)'
