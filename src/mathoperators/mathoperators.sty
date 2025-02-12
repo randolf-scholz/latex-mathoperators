@@ -44,9 +44,10 @@
 % region macros ------------------------------------------------------------------------
 % region physics package ---------------------------------------------------------------
 % SEE: https://tex.stackexchange.com/a/60546
-\NewDocumentCommand\dd{}{\mathop{}\!\mathrm{d}}
+\NewDocumentCommand\dd{}{\mathop{}\!\mathrm{d}}% differential
+% Usage: \int f(x) \dd{x} provides better spacing and makes the d non-italic.
 
-\NewDocumentCommand\dv{e{^} o m}{ % Derivative
+\NewDocumentCommand\dv{e{^} o m}{% Derivative
 	% Usage: \dv{x} ⇝ d/dx,  \dv[f]{x} ⇝ df/dx,  \dv^n[f]{x} ⇝ dⁿf/dxⁿ
 	% Use with \dv*{} for inline fractions
 	\def\dv@exp{\IfValueTF{#1}{^{#1}\!}{}}%
@@ -54,7 +55,7 @@
 	\frac{\dd\dv@exp\dv@num}{\dd#3\dv@exp}%
 }
 
-\NewDocumentCommand\pdv{e{^} o m}{ % Partial derivative
+\NewDocumentCommand\pdv{e{^} o m}{% Partial derivative
 	% Usage: \pdv{x}⇝ ∂/∂x,  \pdv[f]{x} ⇝ ∂f/∂x,  \pdv^n[f]{x} ⇝ ∂ⁿ f/∂xⁿ
 	% Use with \pdv*{} for inline fractions
 	\def\pdv@exp{\IfValueTF{#1}{^{#1}\!}{}}%
