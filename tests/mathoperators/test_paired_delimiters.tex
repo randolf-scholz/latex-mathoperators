@@ -1,0 +1,26 @@
+\documentclass{unittest}
+\usepackage{mathoperators}
+
+\begin{document}
+\(\begin{array}{ccccc}
+\\\\% eval
+	\eval*{f(x)}_a^b & \eval*{f(x)^H}_a^b & \eval{f(x)}_a^b
+\\\\% abs
+	\abs{x} & \abs{x^2} & \abs{\sum\limits_{i=1}^n x_i}
+\\\\% norm
+	\norm{x} & \norm{x^2} & \norm{\sum\limits_{i=1}^n x_i}
+\\\\% ceil
+	\ceil{x} & \ceil{x^2} & \ceil{\sum\limits_{i=1}^n x_i}
+\\\\% floor
+	\floor{x} & \floor{x^2} & \floor{\sum\limits_{i=1}^n x_i}
+\\\\% set
+	\set{x} & \set{x^2} & \set{\sum\limits_{i=1}^n x_i}
+\\\\% tuple
+	\tuple{x} & \tuple{x^2} & \tuple{\sum\limits_{i=1}^n x_i}
+\\\\% generated set
+	\gen{x} & \gen{x^2} & \gen{\sum\limits_{i=1}^n x_i}
+\\\\% iverson
+	\iverson{x} & \iverson{x^2} & \iverson{\sum\limits_{i=1}^n x_i}
+\\\\
+\end{array}\)
+\end{document}
