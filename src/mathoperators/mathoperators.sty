@@ -44,9 +44,7 @@
 % region macros ------------------------------------------------------------------------
 % region physics package ---------------------------------------------------------------
 % SEE: https://tex.stackexchange.com/a/60546
-\NewDocumentCommand\mathopchar{m}{\mathop{}\!\mathrm{#1}}
-
-\NewDocumentCommand\dd{}{\mathopchar{d}}
+\NewDocumentCommand\dd{}{\mathop{}\!\mathrm{d}}
 
 \NewDocumentCommand\dv{e{^} o m}{ % Derivative
 	% Usage: \dv{x} ⇝ d/dx,  \dv[f]{x} ⇝ df/dx,  \dv^n[f]{x} ⇝ dⁿf/dxⁿ
@@ -66,6 +64,18 @@
 \NewDocumentCommand\qq{s m}{\IfBooleanTF{#1}{}{\quad}\text{#2}\quad}
 
 % bracketing
+% NOTE: For clarity, we use the long form of delimiters
+% SEE: TexBook chapter 17.
+%  - \lparen, \rparen: ( )
+%  - \lbrack, \rbrack: [ ]
+%  - \lbrace, \rbrace: { }
+%  - \langle, \rangle: ⟨ ⟩
+%  - \lvert, \rvert: | |
+%  - \lVert, \rVert: ‖ ‖
+%  - \lceil, \rceil: ⌈ ⌉
+%  - \lfloor, \rfloor: ⌊ ⌋
+
+
 \NewDocumentCommand\eval{m}{\left.#1\right\rvert}  % x| evaluate at
 \NewDocumentCommand\abs{m}{\left\lvert#1\right\rvert}  % |x| - absolute value
 \NewDocumentCommand\ceil{m}{\left\lceil#1\right\rceil}  % ⌈x⌉ - ceiling
@@ -78,10 +88,11 @@
 
 \NewDocumentCommand\ket{m}{\left\lvert#1\right\rangle}  % |x⟩ - ket vector
 \NewDocumentCommand\bra{m}{\left\langle#1\right\rvert}  % ⟨x| - bra vector
-\NewDocumentCommand\braket{m m}{\left\langle #1 \middle\vert #2 \right\rangle}  % ⟨x|y⟩ - braket
+\NewDocumentCommand\braket{m m}{\left\langle#1\middle\vert#2\right\rangle}  % ⟨x|y⟩ - braket
 \NewDocumentCommand\ketbra{m m}{\left\lvert#1\middle\rangle\middle\langle#2\right\rvert}  % |x⟩⟨y| - ketbra
-\NewCommandCopy{\inner}{\braket}
-\NewCommandCopy{\dyad}{\ketbra}% \outer not available
+\NewCommandCopy{\iprod}{\ketbra}% inner product
+\NewCommandCopy{\oprod}{\ketbra}% outer product (\outer not available 😞)
+\NewCommandCopy{\dyad}{\ketbra}% outer product (\outer not available 😞)
 % endregion physics package ------------------------------------------------------------
 
 
@@ -134,6 +145,13 @@
 % endregion beamer-aware operators -----------------------------------------------------
 
 
+% region asymptotics -------------------------------------------------------------------
+\NewDocumentCommand{\bigO}{m}{\mathcal{O}\left(#1\right)}% big-O notation
+\NewDocumentCommand{\bigOmega}{m}{\Omega\left(#1\right)}% big-Omega notation
+\NewDocumentCommand{\littleO}{m}{o\left(#1\right)}% little-o notation
+\NewDocumentCommand{\littleOmega}{m}{\omega\left(#1\right)}% little-omega notation
+\NewDocumentCommand{\bigTheta}{m}{\Theta\left(#1\right)}% big-Theta notation
+% endregion asymptotics ----------------------------------------------------------------
 
 % region matrices ----------------------------------------------------------------------
 % Note: *-variant provides extra argument for alignment
@@ -300,12 +318,12 @@
 \DeclareMathOperator*{\essinf}   {ess\,inf}% essential infimum
 % endregion optimization ---------------------------------------------------------------
 
-
-%region calculus -----------------------------------------------------------------------
+% region calculus ----------------------------------------------------------------------
+\DeclareMathOperator{\grad}{\nabla} % gradient
+\DeclareMathOperator{\D}{D} % differential operator
 \DeclareMathOperator{\Jac}{J}% Jacobian
 \DeclareMathOperator{\Hess}{H}% Hessian
-%endregion calculus --------------------------------------------------------------------
-
+% endregion calculus -------------------------------------------------------------------
 
 % region probability -------------------------------------------------------------------
 \DeclareMathOperator{\E}     {\@mathoperators@expectation}      % expectation value

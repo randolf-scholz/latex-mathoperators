@@ -1,6 +1,9 @@
 - id: latex-operator-differential
   name: latex-operator-differential
-  description: 'Checks that `\d` is used for differential.'
+  description: 'Checks that `\dd` is used for differential.'
+  language: pygrep
+  types: [tex]
+  entry: '(\\[A-Za-z]*int\b|∫|∬|∭|⨌|∮|∯|∰)(?![^\$]*?\\dd\b)'
 - id: latex-operator-derivative
   name: latex-operator-derivative
   description: 'Checks that `\D` is used for derivative.'
