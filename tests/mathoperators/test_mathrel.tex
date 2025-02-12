@@ -1,0 +1,19 @@
+\documentclass{unittest}
+\usepackage{mathoperators}
+
+% SEE: `texdoc symbols`, 2024-01-03, chapter 12.3.3
+\makeatletter
+\NewDocumentCommand\INDEP{}{\protect\mathpalette{\protect\@indep}{\perp}}
+\def\@indep#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}}
+\makeatother
+
+\begin{document}
+\(\begin{array}{cccc}
+\\\\% plain
+\\	{\displaystyle a \INDEP b}	& {\textstyle a \INDEP b} & {\scriptstyle a \INDEP b}	& {\scriptscriptstyle a \INDEP b}
+\\	{\displaystyle a \indep b}		&	 {\textstyle a \indep b}	& {\scriptstyle a \indep b}	& {\scriptscriptstyle a \indep b}
+\\	{\displaystyle a \defiff b}	& {\textstyle a \defiff b} & {\scriptstyle a \defiff b}	& {\scriptscriptstyle a \defiff b}
+\\	{\displaystyle a \? b}	& {\textstyle a \? b} & {\scriptstyle a \? b}	& {\scriptscriptstyle a \? b}
+\\\\%
+\end{array}\)
+\end{document}

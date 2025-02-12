@@ -6,6 +6,9 @@ export ROOT_DIR := `git rev-parse --show-toplevel`
 export TEST_DIR := ROOT_DIR + "/tests"
 export TEXMF_DIR := "texmf"
 export DEV_DIR := ROOT_DIR + "/dev"
+# use the C locale for numeric formatting
+export LC_NUMERIC := "C"
+
 
 default:
   @just --list
@@ -80,7 +83,6 @@ test_compile $file $compiler:
     fi
 
 
-# [no-cd]
 [no-exit-message]
 [working-directory: 'tests']  # FIXME: doesn't seem to support {{TEST_DIR}}
 test_one $file:  # compile a single test file
@@ -107,7 +109,7 @@ test_one $file:  # compile a single test file
     error_count=$(( exitcode_pdf + exitcode_lua + exitcode_xe ))
     exit $error_count
 
-# Define the test task
+
 [working-directory: 'tests']  # FIXME: doesn't seem to support {{TEST_DIR}}
 test $case="*":  # run all tests
     #!/usr/bin/env bash
@@ -120,12 +122,8 @@ test $case="*":  # run all tests
     files=(**/test_$case.tex)
     echo "Found ${#files[@]} test files."
 
-    # # change to the test directory
-    # echo "Current directory: $PWD"
-    # cd "$TEST_DIR" || exit 1
-    # echo "Current directory: $PWD"
-
     # run the tests in parallel
+    start_time=$(date +%s.%N)
     pids=()
     for file in "${files[@]}"; do
         just test_one "$file" &
@@ -137,10 +135,14 @@ test $case="*":  # run all tests
     for pid in "${pids[@]}"; do
         wait "$pid" || ((fail_count++))
     done
+    end_time=$(date +%s.%N)
+    runtime=$(echo "$end_time - $start_time" | bc)
 
+    # print the summary
     total=${#pids[@]}
     pass_count=$(( total - fail_count ))
     echo "$pass_count/$total passed"
+    printf "Total runtime: %.1f seconds\n" "$runtime"
 
-    # Optionally, exit with non-zero if any test failed
+    # Exit with non-zero if any test failed
     exit "$fail_count"

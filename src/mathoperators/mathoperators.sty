@@ -62,39 +62,7 @@
 	\frac{\partial\pdv@exp\pdv@num}{\partial#3\pdv@exp}%
 }
 \NewDocumentCommand\qq{s m}{\IfBooleanTF{#1}{}{\quad}\text{#2}\quad}
-
-% bracketing
-% NOTE: For clarity, we use the long form of delimiters
-% SEE: TexBook chapter 17.
-%  - \lparen, \rparen: ( )
-%  - \lbrack, \rbrack: [ ]
-%  - \lbrace, \rbrace: { }
-%  - \langle, \rangle: ⟨ ⟩
-%  - \lvert, \rvert: | |
-%  - \lVert, \rVert: ‖ ‖
-%  - \lceil, \rceil: ⌈ ⌉
-%  - \lfloor, \rfloor: ⌊ ⌋
-
-
-\NewDocumentCommand\eval{m}{\left.#1\right\rvert}  % x| evaluate at
-\NewDocumentCommand\abs{m}{\left\lvert#1\right\rvert}  % |x| - absolute value
-\NewDocumentCommand\ceil{m}{\left\lceil#1\right\rceil}  % ⌈x⌉ - ceiling
-\NewDocumentCommand\floor{m}{\left\lfloor#1\right\rfloor}  % ⌊x⌋ - floor
-\NewDocumentCommand\norm{m}{\left\lVert#1\right\rVert}  % ‖x‖ - norm
-\NewDocumentCommand\set{m}{\left\{#1\right\}}  % {x} set
-\NewDocumentCommand\tuple{m}{\left(#1\right)}  % (x) tuple
-\NewDocumentCommand\seq{m}{\left(#1\right)}  % (x) sequence
-\NewDocumentCommand\gen{m}{\left\langle#1\right\rangle}  % ⟨x⟩ - generated group
-
-\NewDocumentCommand\ket{m}{\left\lvert#1\right\rangle}  % |x⟩ - ket vector
-\NewDocumentCommand\bra{m}{\left\langle#1\right\rvert}  % ⟨x| - bra vector
-\NewDocumentCommand\braket{m m}{\left\langle#1\middle\vert#2\right\rangle}  % ⟨x|y⟩ - braket
-\NewDocumentCommand\ketbra{m m}{\left\lvert#1\middle\rangle\middle\langle#2\right\rvert}  % |x⟩⟨y| - ketbra
-\NewCommandCopy{\iprod}{\ketbra}% inner product
-\NewCommandCopy{\oprod}{\ketbra}% outer product (\outer not available 😞)
-\NewCommandCopy{\dyad}{\ketbra}% outer product (\outer not available 😞)
 % endregion physics package ------------------------------------------------------------
-
 
 % region beamer-aware operators --------------------------------------------------------
 \@ifclassloaded{beamer}{%
@@ -144,14 +112,36 @@
 }{} % end if beamer
 % endregion beamer-aware operators -----------------------------------------------------
 
+% TODO: Use mathtools.DeclarePairedDelimiter?
+\NewDocumentCommand\eval{m}{\left.#1\right\rvert}  % x| evaluate at
+\NewDocumentCommand\abs{m}{\left\lvert#1\right\rvert}  % |x| - absolute value
+\NewDocumentCommand\ceil{m}{\left\lceil#1\right\rceil}  % ⌈x⌉ - ceiling
+\NewDocumentCommand\floor{m}{\left\lfloor#1\right\rfloor}  % ⌊x⌋ - floor
+\NewDocumentCommand\norm{m}{\left\lVert#1\right\rVert}  % ‖x‖ - norm
+\NewDocumentCommand\set{m}{\left\{#1\right\}}  % {x} set
+\NewDocumentCommand\tuple{m}{\left(#1\right)}  % (x) tuple
+\NewDocumentCommand\seq{m}{\left(#1\right)}  % (x) sequence
+\NewDocumentCommand\gen{m}{\left\langle#1\right\rangle}  % ⟨x⟩ - generated group
 
-% region asymptotics -------------------------------------------------------------------
+% bra-ket notation
+\NewDocumentCommand\ket{m}{\left\lvert#1\right\rangle}  % |x⟩ - ket vector
+\NewDocumentCommand\bra{m}{\left\langle#1\right\rvert}  % ⟨x| - bra vector
+\NewDocumentCommand\braket{m m}{\left\langle#1\middle\vert#2\right\rangle}  % ⟨x|y⟩ - braket
+\NewDocumentCommand\ketbra{m m}{\left\lvert#1\middle\rangle\middle\langle#2\right\rvert}  % |x⟩⟨y| - ketbra
+\NewCommandCopy{\iprod}{\braket}% inner product
+\NewCommandCopy{\oprod}{\ketbra}% outer product (\outer not available 😞)
+\NewCommandCopy{\dyad}{\ketbra}% outer product (\outer not available 😞)
+
+% fractions
+\NewDocumentCommand{\pfrac} {m m}{\left(\frac {#1}{#2}\right)}
+\NewDocumentCommand{\ptfrac}{m m}{\left(\tfrac{#1}{#2}\right)}
+
+% asymptotics
 \NewDocumentCommand{\bigO}{m}{\mathcal{O}\left(#1\right)}% big-O notation
 \NewDocumentCommand{\bigOmega}{m}{\Omega\left(#1\right)}% big-Omega notation
 \NewDocumentCommand{\littleO}{m}{o\left(#1\right)}% little-o notation
 \NewDocumentCommand{\littleOmega}{m}{\omega\left(#1\right)}% little-omega notation
 \NewDocumentCommand{\bigTheta}{m}{\Theta\left(#1\right)}% big-Theta notation
-% endregion asymptotics ----------------------------------------------------------------
 
 % region matrices ----------------------------------------------------------------------
 % Note: *-variant provides extra argument for alignment
@@ -202,13 +192,8 @@
 \NewDocumentCommand\aarr{m m}{\left\langle\begin{array}{#1}#2\end{array}\right\rangle}
 % endregion arrays ---------------------------------------------------------------------
 
-% region fractions ---------------------------------------------------------------------
-\NewDocumentCommand{\pfrac} {m m}{\left(\frac {#1}{#2}\right)}
-\NewDocumentCommand{\ptfrac}{m m}{\left(\tfrac{#1}{#2}\right)}
-% endregion miscelaneous ---------------------------------------------------------------
-
 % region embellishments ----------------------------------------------------------------
-% NOTE: amsmath aliases \Hat -> \hat, we override this behavior
+% NOTE: overrides amsmath aliases \Hat -> \hat, etc.
 \RenewCommandCopy{\Hat}{\widehat}%
 \RenewCommandCopy{\Bar}{\overline}%
 \RenewCommandCopy{\Tilde}{\widetilde}%
@@ -222,44 +207,94 @@
 % endregion macros ---------------------------------------------------------------------
 
 
+% NOTE: `\mathcode` class codes
+% Example: \meaning\perp -> \mathchar"323F
+%  - First octdigit (0-7): 3 -> \mathrel
+%  - Second hexdigit (0-F): 2 -> second math alphabet (16 max)
+%  - Last two hexdigits (00-FF): 3F -> slot in the 256 character table.
+% Classes:
+% 	0: \mathord Ordinary (eg., /)
+% 	1: \mathop Large operator (eg., \sum)
+% 	2: \mathbin Binary operation (eg., +)
+% 	3: \mathrel Relation (eg., =)
+% 	4: \mathopen Opening (eg., ()
+% 	5: \mathclose Closing (eg., ))
+% 	6: \mathpunct Punctuation (eg., ,)
+% 	7: \mathinner Variable family (eg., x)
+
+
 % region characters --------------------------------------------------------------------
 % NOTE: all commands defined here should use \mathord
 \NewDocumentCommand{\const}{}{\mathord{\text{const.}}}% constant
 \NewDocumentCommand{\iid}{}{\mathord{text{iid}}} % independent and identically distributed
+% constants
 \NewDocumentCommand{\NA}{}{\ifmmode\mathord{\texttt{N\!/\!A}}\else\texttt{N\!/\!A}\fi}
 \NewDocumentCommand{\NaN}{}{\ifmmode\mathord{\texttt{NaN}}\else\texttt{NaN}\fi}
 \NewCommandCopy{\NAN}{\NaN}
 \NewCommandCopy{\nan}{\NaN}
+\NewDocumentCommand{\eye}  {}{\mathord{\mathbb{I}}}% identity tensor
+\NewDocumentCommand{\ones} {}{\mathord{\mathbb{1}}}% all-ones tensor
+\NewDocumentCommand{\zeros}{}{\mathord{\mathbb{0}}}% all-zeros tensor
+% region calculus-----------------------------------------------------------------------
+\NewDocumentCommand{\grad}{}{\mathord{\nabla}}% gradient
+\NewDocumentCommand{\D}   {}{\mathord{\mathbf{D}}}% total derivative
+\NewDocumentCommand{\Jac} {}{\mathord{\mathbf{J}}}% Jacobian
+\NewDocumentCommand{\Hess}{}{\mathord{\mathbf{H}}}% Hessian
+\NewDocumentCommand{\F}   {}{\mathord{\mathcal{F}}}% Fourier transform
+% endregion calculus -------------------------------------------------------------------
 % endregion characters -----------------------------------------------------------------
 
 
 % region binary operators --------------------------------------------------------------
 % NOTE: all commands defined here should use \mathbin
-% NOTE: consider using ⁇ instead of \? for where-operator? (\Question in stix package)
-% NOTE: Use \mathrel{?} for more space.
-% SEE: https://tex.stackexchange.com/a/38984
-\NewDocumentCommand{\?}{}{\mathrel{\textbf{\textsf{?}}}}% where operator
-\NewDocumentCommand{\defiff}{}{\mathrel{\overset{\text{def}}{\iff}}}% definition iff
+% NOTE: mathbin is slightly less space than mathrel: https://tex.stackexchange.com/a/38984
 % endregion binary operators -----------------------------------------------------------
 
 
 % region relations ---------------------------------------------------------------------
 % NOTE: all commands defined here should use \mathrel
+% NOTE: consider using ⁇ instead of \? for where-operator? (\Question in stix package)
+\NewDocumentCommand{\?}{}{\mathrel{\textbf{\textsf{?}}}}% where operator
+\NewDocumentCommand{\defiff}{}{\mathrel{\overset{\text{def}}{\iff}}}% definition iff
+\NewDocumentCommand{\indep}{}{\mathrel{\perp\!\!\!\perp}}% chktex 21
+\NewCommandCopy{\given}{\mid}% probability conditional
 % endregion relations ------------------------------------------------------------------
 
 
 % region brackets ----------------------------------------------------------------------
 % NOTE: all commands defined here should use \mathopen, \mathclose
+% bracketing
+% NOTE: For clarity, we use the long form of delimiters
+% SEE: TexBook chapter 17.
+%  - \lparen, \rparen: ( )
+%  - \lbrack, \rbrack: [ ]
+%  - \lbrace, \rbrace: { }
+%  - \langle, \rangle: ⟨ ⟩
+%  - \lvert, \rvert: | |
+%  - \lVert, \rVert: ‖ ‖
+%  - \lceil, \rceil: ⌈ ⌉
+%  - \lfloor, \rfloor: ⌊ ⌋
+\ProvideDocumentCommand{\lParen}{}{\mathopen{\lparen\mkern-4.5mu\lparen}}
+\ProvideDocumentCommand{\rParen}{}{\mathclose{\rparen\mkern-4.5mu\rparen}}
+\ProvideDocumentCommand{\lBrace}{}{\mathopen{\lbrace\mkern-6mu\lbrace}}
+\ProvideDocumentCommand{\rBrace}{}{\mathclose{\rbrace\mkern-6mu\rbrace}}
+\ProvideDocumentCommand{\lAngle}{}{\mathopen{\langle\mkern-4.5mu\langle}}
+\ProvideDocumentCommand{\rAngle}{}{\mathclose{\rangle\mkern-4.5mu\rangle}}
+\ProvideDocumentCommand{\lBrack}{}{\mathopen{\lbrack\mkern-3mu\lbrack}}
+\ProvideDocumentCommand{\rBrack}{}{\mathclose{\rbrack\mkern-3mu\rbrack}}
 % endregion brackets -------------------------------------------------------------------
 
 
 % region mathoperators -----------------------------------------------------------------
-% NOTE: all commands defined here should use \DeclateMathOperator (-> \mathop)
+% NOTE: all commands defined here should use \DeclareMathOperator (-> \mathop)
+% NOTE: an operator is something that expects an argument.
+% NOTE: Operators can be used without brackets, in which case they insert extra space.
 % region sets --------------------------------------------------------------------------
 \DeclareMathOperator{\vol}    {vol}     % volume
 \DeclareMathOperator{\Seq}    {Seq}     % sequence space
 \DeclareMathOperator{\OrdSeq} {OrdSeq}  % space of ordered sequences
 % endregion sets -----------------------------------------------------------------------
+
 
 % region functions ---------------------------------------------------------------------
 \DeclareMathOperator{\Fun}    {Fun}   % space of  functions
@@ -268,8 +303,8 @@
 \DeclareMathOperator{\dom}    {dom}   % domain
 \DeclareMathOperator{\codom}  {codom} % codomain
 \DeclareMathOperator{\im}     {im}    % image
-\DeclareMathOperator{\range}  {range} % range
-\DeclareMathOperator{\supp}   {supp}  % support
+\DeclareMathOperator{\range}  {range} % range (synonym for image)
+\DeclareMathOperator{\supp}   {supp}  % support ( \dom(f)\f⁻¹({0}) )
 
 \DeclareMathOperator{\dist}   {dist}  % distance metric
 \DeclareMathOperator{\Sim}    {sim}   % similarity
@@ -277,15 +312,12 @@
 
 
 % region Linear Algebra ----------------------------------------------------------------
-% constants
-\DeclareMathOperator{\eye}   {\mathbb{I}} % identity tensor
-\DeclareMathOperator{\ones}  {\mathbb{1}} % all-ones tensor
-\DeclareMathOperator{\zeros} {\mathbb{0}} % all-zeros tensor
 % spaces
 \DeclareMathOperator{\GL}    {GL}    % general linear group
 \DeclareMathOperator{\Lin}   {Lin}   % space of linear functions
 \DeclareMathOperator{\Mat}   {Mat}   % space of matrices
 \DeclareMathOperator{\Ker}   {Ker}   % kernel of matrix
+\DeclareMathOperator{\Null}  {Null}  % null space (synonym for kernel)
 % induced sets
 \DeclareMathOperator{\Span}  {span}  % linear span
 \DeclareMathOperator{\aff}   {aff}   % affine  hull
@@ -300,6 +332,7 @@
 \DeclareMathOperator{\rank}  {rank}  % rank
 % endregion Linear Algebra -------------------------------------------------------------
 
+
 % region abstract algebra --------------------------------------------------------------
 \DeclareMathOperator{\Hom}   {Hom}   % Homomorphism
 \DeclareMathOperator{\Sym}   {Sym}   % Symmetry group
@@ -308,6 +341,7 @@
 \DeclareMathOperator{\Alt}   {Alt}   % Alternating group
 \DeclareMathOperator{\charK} {char}  % Field characteristic
 % endregion abstract algebra -----------------------------------------------------------
+
 
 % region optimization ------------------------------------------------------------------
 \DeclareMathOperator*{\minimize} {minimize}
@@ -318,12 +352,6 @@
 \DeclareMathOperator*{\essinf}   {ess\,inf}% essential infimum
 % endregion optimization ---------------------------------------------------------------
 
-% region calculus ----------------------------------------------------------------------
-\DeclareMathOperator{\grad}{\nabla} % gradient
-\DeclareMathOperator{\D}{D} % differential operator
-\DeclareMathOperator{\Jac}{J}% Jacobian
-\DeclareMathOperator{\Hess}{H}% Hessian
-% endregion calculus -------------------------------------------------------------------
 
 % region probability -------------------------------------------------------------------
 \DeclareMathOperator{\E}     {\@mathoperators@expectation}      % expectation value
@@ -349,12 +377,11 @@
 % endregion probability ----------------------------------------------------------------
 
 
-
 % region special functions -------------------------------------------------------------
-\DeclareMathOperator{\one}    {\mathds{1}} % indicator
-\DeclareMathOperator{\id}     {id}         % identity
+\DeclareMathOperator{\one}    {\mathds{1}} % indicator function
+\DeclareMathOperator{\id}     {id}         % identity function
 \DeclareMathOperator{\sign}   {sign}       % signum
-\DeclareMathOperator{\rect}   {rect}       % rect function
+\DeclareMathOperator{\rect}   {rect}       % rect function (also known as boxcar)
 \DeclareMathOperator{\erf}    {erf}        % error function
 \DeclareMathOperator{\erfc}   {erfc}       % complementary error function
 \DeclareMathOperator{\sinc}   {sinc}       % sinus cardinalis function
@@ -363,8 +390,6 @@
 \DeclareMathOperator{\artanh} {artanh}     % inverse hyperbolic trigonometric functions
 \DeclareMathOperator{\atan2}  {atan2}      % two-argument inverse tangent
 % endregion special functions ----------------------------------------------------------
-
-
 
 
 % region Machine Learning --------------------------------------------------------------
@@ -385,11 +410,6 @@
 \DeclareMathOperator{\softplus} {softplus}
 \DeclareMathOperator{\logit}    {logit}
 \DeclareMathOperator{\probit}   {probit}
-% model components
-\DeclareMathOperator{\enc}{enc}  % encoder
-\DeclareMathOperator{\dec}{dec}  % decoder
-\DeclareMathOperator{\Att}{Att}  % Attention
-\DeclareMathOperator{\Emb}{Emb}  % Embedding
 % model types
 \DeclareMathOperator{\CNN}{CNN}  % Convolutional neural network
 \DeclareMathOperator{\FFN}{FFN}  % Feed forward network
