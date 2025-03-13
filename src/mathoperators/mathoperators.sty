@@ -1,5 +1,22 @@
 % chktex-file 41
 \ProvidesPackage{mathoperators}[2024-11-15]% chktex 8
+%
+% macros defined in this file with 2 or less characters:
+% - \? (where operator)
+% - \D (derivative)
+% - \E (expectation)
+% - \F (Fourier transform)
+% - \tr (trace)
+% - \im (image)
+% - \id (identity function)
+% - \dd (differential)
+% - \dv (derivative)
+% - \GL (general linear group)
+% - \NN (neural network)
+% - \NA (not available / missing value)
+% - \KL (Kullback-Leibler divergence)
+% - \QL (quantile loss)
+
 % region requirements ------------------------------------------------------------------
 \NeedsTeXFormat{LaTeX2e}[2024-06-01]% chktex 8
 \RequirePackage{mathtools}
@@ -441,6 +458,7 @@
 \DeclareMathOperator{\logit}    {logit}
 \DeclareMathOperator{\probit}   {probit}
 % model types
+\DeclareMathOperator{\NN}{NN}    % Neural network
 \DeclareMathOperator{\CNN}{CNN}  % Convolutional neural network
 \DeclareMathOperator{\FFN}{FFN}  % Feed forward network
 \DeclareMathOperator{\GAT}{GAT}  % Graph attention network
