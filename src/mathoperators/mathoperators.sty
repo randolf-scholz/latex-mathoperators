@@ -272,13 +272,16 @@
 
 % region characters --------------------------------------------------------------------
 % NOTE: all commands defined here should use \mathord
-\NewDocumentCommand{\const}{}{\mathord{\text{const.}}}% constant
-\NewDocumentCommand{\iid}{}{\mathord{text{iid}}} % independent and identically distributed
+\NewDocumentCommand{\const}{}{\mathord{\mathrm{const.}}}% constant
+\NewDocumentCommand{\iid}{}{\mathord{\mathsf{iid}}}% independent and identically distributed
 % constants
-\NewDocumentCommand{\NA}{}{\ifmmode\mathord{\texttt{N\!/\!A}}\else\texttt{N\!/\!A}\fi}
-\NewDocumentCommand{\NaN}{}{\ifmmode\mathord{\texttt{NaN}}\else\texttt{NaN}\fi}
+\NewDocumentCommand{\true}{}{\ifmmode\mathord{\mathtt{true}}\else\texttt{true}\fi}
+\NewDocumentCommand{\false}{}{\ifmmode\mathord{\mathtt{false}}\else\texttt{false}\fi}
+\NewDocumentCommand{\NA}{}{\ifmmode\mathord{\mathtt{N\!\!A}}\else\texttt{N\!\!A}\fi}
+\NewDocumentCommand{\NaN}{}{\ifmmode\mathord{\mathtt{NaN}}\else\texttt{NaN}\fi}
 \NewCommandCopy{\NAN}{\NaN}
 \NewCommandCopy{\nan}{\NaN}
+% tensors
 \NewDocumentCommand{\eye}  {}{\mathord{\mathbb{I}}}% identity tensor
 \NewDocumentCommand{\ones} {}{\mathord{\mathbb{1}}}% all-ones tensor
 \NewDocumentCommand{\zeros}{}{\mathord{\mathbb{0}}}% all-zeros tensor
@@ -301,8 +304,10 @@
 % region relations ---------------------------------------------------------------------
 % NOTE: all commands defined here should use \mathrel
 % NOTE: consider using ⁇ instead of \? for where-operator? (\Question in stix package)
-\NewDocumentCommand{\?}{}{\mathrel{\textbf{\textsf{?}}}}% where operator
-\NewDocumentCommand{\defiff}{}{\mathrel{\overset{\text{def}}{\iff}}}% definition iff
+\NewDocumentCommand{\?}{}{\mathrel{\texttt{?}}}% where operator shorthand
+\NewDocumentCommand{\defiff}{}{\mathrel{\overset{\mathclap{\scriptscriptstyle\mathsf{def}}}{\iff}}}% definition iff
+\NewDocumentCommand{\defeq}{}{\mathrel{\overset{\mathclap{\scriptscriptstyle\mathsf{def}}}{=}}}% definition equal
+\NewDocumentCommand{\iidsim}{}{\mathrel{\overset{\mathclap{\scriptscriptstyle\mathsf{iid}}}{\sim}}}% iid similarity
 \NewDocumentCommand{\indep}{}{\mathrel{\perp\!\!\!\perp}}% chktex 21
 \NewCommandCopy{\given}{\mid}% probability conditional
 % endregion relations ------------------------------------------------------------------
@@ -336,6 +341,13 @@
 % NOTE: all commands defined here should use \DeclareMathOperator (-> \mathop)
 % NOTE: an operator is something that expects an argument.
 % NOTE: Operators can be used without brackets, in which case they insert extra space.
+
+
+
+% region logic -------------------------------------------------------------------------
+\DeclareMathOperator{\where}  {where}  % where operator
+% endregion logic ----------------------------------------------------------------------
+
 % region sets --------------------------------------------------------------------------
 \DeclareMathOperator{\vol}    {vol}     % volume
 \DeclareMathOperator{\Seq}    {Seq}     % sequence space
