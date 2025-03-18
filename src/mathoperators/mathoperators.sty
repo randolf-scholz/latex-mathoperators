@@ -109,9 +109,7 @@
 \NewDocumentCommand\qq{s m}{\IfBooleanTF{#1}{}{\quad}\text{#2}\quad}
 % endregion physics package ------------------------------------------------------------
 
-% region beamer-aware operators --------------------------------------------------------
-\@ifclassloaded{beamer}{%
-% FIXME: https://tex.stackexchange.com/q/565971
+% region over/underbrace ---------------------------------------------------------------
 \NewCommandCopy{\old@underbrace}{\underbrace}
 \NewCommandCopy{\old@overbrace}{\overbrace}
 \NewCommandCopy{\old@underbracket}{\underbracket}
@@ -119,43 +117,89 @@
 \NewCommandCopy{\old@underset}{\underset}
 \NewCommandCopy{\old@overset}{\overset}
 
-\DeclareDocumentCommand{\underbrace}{d<> m e{_}}{%
+% region small over/underbrace ---------------------------------------------------------
+\NewDocumentCommand{\smalloverbrace}{d<> m m}{%
 	\IfValueTF{#1}% IF <overlay-specification> given
-	{\old@underbrace{#2\onslide<#1>}_{#3}\onslide}%
-	{\old@underbrace{#2}_{#3}}%
+	{\old@overbrace{\mathclap{\scriptscriptstyle\mathsf{#2}}\onslide<#1>}{#3}\onslide}%
+	{\old@overbrace{\mathclap{\scriptscriptstyle\mathsf{#2}}}{#3}}%
 }%
 
-\DeclareDocumentCommand{\overbrace}{d<> m e{^}}{%
+\NewDocumentCommand{\smallunderbrace}{d<> m m}{%
 	\IfValueTF{#1}% IF <overlay-specification> given
-	{\onslide<#1>\old@overbrace{\onslide<1->#2}^{#3}\onslide}%
-	{\old@overbrace{#2}^{#3}}%
+	{\old@underbrace{\mathclap{\scriptscriptstyle\mathsf{#2}}\onslide<#1>}{#3}\onslide}%
+	{\old@underbrace{\mathclap{\scriptscriptstyle\mathsf{#2}}}{#3}}%
 }%
 
-\DeclareDocumentCommand{\underbracket}{d<> m e{_}}{%
+\NewDocumentCommand{\smalloverbraket}{d<> m m}{%
 	\IfValueTF{#1}% IF <overlay-specification> given
-	{\old@underbracket{#2\onslide<#1>}_{#3}\onslide}%
-	{\old@underbracket{#2}_{#3}}%
+	{\old@overbraket{\mathclap{\scriptscriptstyle\mathsf{#2}}\onslide<#1>}{#3}\onslide}%
+	{\old@overbraket{\mathclap{\scriptscriptstyle\mathsf{#2}}}{#3}}%
 }%
 
-\DeclareDocumentCommand{\overbracket}{d<> m e{^}}{%
+\NewDocumentCommand{\smallunderbraket}{d<> m m}{%
 	\IfValueTF{#1}% IF <overlay-specification> given
-	{\onslide<#1>\old@overbracket{\onslide<1->#2}^{#3}\onslide}%
-	{\old@overbracket{#2}^{#3}}%
+	{\old@underbraket{\mathclap{\scriptscriptstyle\mathsf{#2}}\onslide<#1>}{#3}\onslide}%
+	{\old@underbraket{\mathclap{\scriptscriptstyle\mathsf{#2}}}{#3}}%
 }%
 
-\DeclareDocumentCommand{\underset}{d<> m m}{%
+\NewDocumentCommand{\smalloverset}{d<> m m}{%
 	\IfValueTF{#1}% IF <overlay-specification> given
-	{\onslide<#1>\old@underset{\onslide<1->#2}{#3}\onslide}%
-	{\old@underset{#2}{#3}}%
+	{\old@overset{\mathclap{\scriptscriptstyle\mathsf{#2}}\onslide<#1>}{#3}\onslide}%
+	{\old@overset{\mathclap{\scriptscriptstyle\mathsf{#2}}}{#3}}%
 }%
 
-\DeclareDocumentCommand{\overset}{d<> m m}{%
+\NewDocumentCommand{\smallunderset}{d<> m m}{%
 	\IfValueTF{#1}% IF <overlay-specification> given
-	{\old@overset{#2\onslide<#1>}{#3}\onslide}%
-	{\old@overset{#2}{#3}}%
+	{\old@underset{\mathclap{\scriptscriptstyle\mathsf{#2}}\onslide<#1>}{#3}\onslide}%
+	{\old@underset{\mathclap{\scriptscriptstyle\mathsf{#2}}}{#3}}%
 }%
-}{} % end if beamer
+% endregion small over/underbrace ------------------------------------------------------
+
+
+% region beamer-aware operators --------------------------------------------------------
+\@ifclassloaded{beamer}{%
+	% FIXME: https://tex.stackexchange.com/q/565971
+	\DeclareDocumentCommand{\underbrace}{d<> m e{_}}{%
+		\IfValueTF{#1}% IF <overlay-specification> given
+		{\old@underbrace{#2\onslide<#1>}_{#3}\onslide}%
+		{\old@underbrace{#2}_{#3}}%
+	}%
+
+	\DeclareDocumentCommand{\overbrace}{d<> m e{^}}{%
+		\IfValueTF{#1}% IF <overlay-specification> given
+		{\onslide<#1>\old@overbrace{\onslide<1->#2}^{#3}\onslide}%
+		{\old@overbrace{#2}^{#3}}%
+	}%
+
+	\DeclareDocumentCommand{\underbracket}{d<> m e{_}}{%
+		\IfValueTF{#1}% IF <overlay-specification> given
+		{\old@underbracket{#2\onslide<#1>}_{#3}\onslide}%
+		{\old@underbracket{#2}_{#3}}%
+	}%
+
+	\DeclareDocumentCommand{\overbracket}{d<> m e{^}}{%
+		\IfValueTF{#1}% IF <overlay-specification> given
+		{\onslide<#1>\old@overbracket{\onslide<1->#2}^{#3}\onslide}%
+		{\old@overbracket{#2}^{#3}}%
+	}%
+
+	\DeclareDocumentCommand{\underset}{d<> m m}{%
+		\IfValueTF{#1}% IF <overlay-specification> given
+		{\onslide<#1>\old@underset{\onslide<1->#2}{#3}\onslide}%
+		{\old@underset{#2}{#3}}%
+	}%
+
+	\DeclareDocumentCommand{\overset}{d<> m m}{%
+		\IfValueTF{#1}% IF <overlay-specification> given
+		{\old@overset{#2\onslide<#1>}{#3}\onslide}%
+		{\old@overset{#2}{#3}}%
+	}%
+}{% BEAMER NOT LOADED
+}% ENDIF BEAMER
 % endregion beamer-aware operators -----------------------------------------------------
+% endregion over/underbrace ------------------------------------------------------------
+
+
 
 % TODO: Use mathtools.DeclarePairedDelimiter?
 \NewDocumentCommand{\eval}{m}{\left.#1\right\rvert}  % x| evaluate at
@@ -277,7 +321,7 @@
 % constants
 \NewDocumentCommand{\true}{}{\ifmmode\mathord{\mathtt{true}}\else\texttt{true}\fi}
 \NewDocumentCommand{\false}{}{\ifmmode\mathord{\mathtt{false}}\else\texttt{false}\fi}
-\NewDocumentCommand{\NA}{}{\ifmmode\mathord{\mathtt{N\!\!A}}\else\texttt{N\!\!A}\fi}
+\NewDocumentCommand{\NA}{}{\ifmmode\mathord{\mathtt{NA}}\else\texttt{NA}\fi}
 \NewDocumentCommand{\NaN}{}{\ifmmode\mathord{\mathtt{NaN}}\else\texttt{NaN}\fi}
 \NewCommandCopy{\NAN}{\NaN}
 \NewCommandCopy{\nan}{\NaN}
