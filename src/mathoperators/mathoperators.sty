@@ -55,6 +55,7 @@
 \SetKeys[mathoperators]{
 	expectation={\mathbf{E}},
 	variance={Var},
+	physics-compat={false},
 }
 \ProcessKeyOptions[mathoperators]
 % endregion options --------------------------------------------------------------------
@@ -84,17 +85,14 @@
 		\mathop{}\!\mathrm{d}\dd@exp#2%
 	}
 \else%
-	% define \pdv and \dv in a way that is backward compatible with the physics package
 	\NewDocumentCommand\dv{e{^} o m}{% Derivative
 		% Usage: \dv{x} ⇝ d/dx,  \dv[f]{x} ⇝ df/dx,  \dv^n[f]{x} ⇝ dⁿf/dxⁿ
-		% Use with \dv*{} for inline fractions
 		\def\dv@exp{\IfValueTF{#1}{^{#1}\!}{}}%
 		\def\dv@num{\IfValueTF{#2}{#2}{}}%
 		\frac{\dd\dv@exp\dv@num}{\dd#3\dv@exp}%
 	}
 	\NewDocumentCommand\pdv{e{^} o m}{% Partial derivative
 		% Usage: \pdv{x}⇝ ∂/∂x,  \pdv[f]{x} ⇝ ∂f/∂x,  \pdv^n[f]{x} ⇝ ∂ⁿf/∂xⁿ
-		% Use with \pdv*{} for inline fractions
 		\def\pdv@exp{\IfValueTF{#1}{^{#1}\!}{}}%
 		\def\pdv@num{\IfValueTF{#2}{#2}{}}%
 		\frac{\partial\pdv@exp\pdv@num}{\partial#3\pdv@exp}%
