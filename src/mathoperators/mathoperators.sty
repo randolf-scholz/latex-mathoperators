@@ -67,6 +67,11 @@
 
 \if@mathoperators@physicscompat%
 	% define \pdv and \dv in a way that is backward compatible with the physics package
+	\NewDocumentCommand\dd{o m}{% differential
+		% Usage: \int f(x) \dd{x} provides better spacing and makes the d non-italic.
+		\def\dd@exp{\IfValueT{#1}{^{#1}\!}}%
+		\mathop{}\!\mathrm{d}\dd@exp#2%
+	}
 	\NewDocumentCommand\dv{o m m}{% Derivative
 		% Usage: \dv{}{x} ⇝ d/dx,  \dv{f}{x} ⇝ df/dx,  \dv[n]{f}{x} ⇝ dⁿf/dxⁿ
 		% Use with \dv*{} for inline fractions
@@ -79,12 +84,11 @@
 		\def\pdv@exp{\IfValueT{#1}{^{#1}\!}}%
 		\frac{\partial\pdv@exp#2}{\partial#3\pdv@exp}%
 	}
-	\NewDocumentCommand\dd{o m}{% differential
-		% Usage: \int f(x) \dd{x} provides better spacing and makes the d non-italic.
-		\def\dd@exp{\IfValueT{#1}{^{#1}\!}}%
-		\mathop{}\!\mathrm{d}\dd@exp#2%
-	}
 \else%
+	\NewDocumentCommand\dd{}{% differential
+		% Usage: \int f(x) \dd{x} provides better spacing and makes the d non-italic.
+		\mathop{}\!\mathrm{d}%
+	}
 	\NewDocumentCommand\dv{e{^} o m}{% Derivative
 		% Usage: \dv{x} ⇝ d/dx,  \dv[f]{x} ⇝ df/dx,  \dv^n[f]{x} ⇝ dⁿf/dxⁿ
 		\def\dv@exp{\IfValueT{#1}{^{#1}\!}}%
@@ -96,10 +100,6 @@
 		\def\pdv@exp{\IfValueT{#1}{^{#1}\!}}%
 		\def\pdv@num{\IfValueT{#2}{#2}}%
 		\frac{\partial\pdv@exp\pdv@num}{\partial#3\pdv@exp}%
-	}
-	\NewDocumentCommand\dd{}{% differential
-		% Usage: \int f(x) \dd{x} provides better spacing and makes the d non-italic.
-		\mathop{}\!\mathrm{d}%
 	}
 \fi%
 
