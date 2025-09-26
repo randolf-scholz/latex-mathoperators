@@ -50,11 +50,14 @@
 	expectation.usage	= load,
 	variance.store		= \@mathoperators@variance,
 	variance.usage		= load,
+	covariance.store	= \@mathoperators@covariance,
+	covariance.usage	= load,
 	physics-compat.if	= @mathoperators@physicscompat,
 }
 \SetKeys[mathoperators]{
 	expectation={\mathbf{E}},
 	variance={Var},
+	covariance={Cov},
 	physics-compat={false},
 }
 \ProcessKeyOptions[mathoperators]
@@ -455,10 +458,12 @@
 
 
 % region probability -------------------------------------------------------------------
-\DeclareMathOperator{\E}     {\@mathoperators@expectation}      % expectation value
-\DeclareMathOperator{\cov}   {cov}                              % covariance
+\DeclareMathOperator{\E}     {\@mathoperators@expectation}      % expectation value (custom)
+\DeclareMathOperator{\Cov}   {\@mathoperators@covariance}       % Covariance (custom)
+\DeclareMathOperator{\Var}   {\@mathoperators@variance}         % Variance (custom)
+\DeclareMathOperator{\cov}   {cov}                              % covariance (lowercase)
+\DeclareMathOperator{\var}   {var}                              % variance (lowercase)
 \DeclareMathOperator{\corr}  {corr}                             % correlation
-\DeclareMathOperator{\Var}   {\@mathoperators@variance}         % Variance
 \DeclareMathOperator{\Bias}  {Bias}                             % Bias
 \DeclareMathOperator{\median}{median}                           % Median
 \DeclareMathOperator{\avg}   {avg}                              % Average
