@@ -331,11 +331,10 @@
 \NewDocumentCommand{\ones} {}{\mathord{\mathbb{1}}}% all-ones tensor
 \NewDocumentCommand{\zeros}{}{\mathord{\mathbb{0}}}% all-zeros tensor
 % region calculus-----------------------------------------------------------------------
-\NewDocumentCommand{\grad}{}{\mathord{\nabla}}% gradient
-\NewDocumentCommand{\D}   {}{\mathord{\mathbf{D}}}% total derivative
-\NewDocumentCommand{\Jac} {}{\mathord{\mathbf{J}}}% Jacobian
-\NewDocumentCommand{\Hess}{}{\mathord{\mathbf{H}}}% Hessian
-\NewDocumentCommand{\F}   {}{\mathord{\mathcal{F}}}% Fourier transform
+\NewDocumentCommand{\D}   {}{\mathord{\mathbf{D}}}  % total derivative
+\NewDocumentCommand{\Jac} {}{\mathord{\mathbf{J}}}  % Jacobian
+\NewDocumentCommand{\Hess}{}{\mathord{\mathbf{H}}}  % Hessian
+\NewDocumentCommand{\F}   {}{\mathord{\mathcal{F}}} % Fourier transform
 % endregion calculus -------------------------------------------------------------------
 % endregion characters -----------------------------------------------------------------
 
@@ -422,6 +421,7 @@
 \DeclareMathOperator{\Mat}   {Mat}   % space of matrices
 \DeclareMathOperator{\Ker}   {Ker}   % kernel of matrix
 \DeclareMathOperator{\Null}  {Null}  % null space (synonym for kernel)
+\DeclareMathOperator{\Skew}  {Skew}  % skew-symmetric matrices
 % induced sets
 \DeclareMathOperator{\Span}  {span}  % linear span
 \DeclareMathOperator{\aff}   {aff}   % affine  hull
@@ -445,6 +445,13 @@
 \DeclareMathOperator{\Alt}   {Alt}   % Alternating group
 \DeclareMathOperator{\charK} {char}  % Field characteristic
 % endregion abstract algebra -----------------------------------------------------------
+
+
+% region calculus ----------------------------------------------------------------------
+\DeclareMathOperator{\grad}  {grad}      % gradient
+\DeclareMathOperator{\curl}  {curl}      % curl
+\DeclareMathOperator{\divg}  {div}       % divergence
+% endregion calculus -------------------------------------------------------------------
 
 
 % region optimization ------------------------------------------------------------------
