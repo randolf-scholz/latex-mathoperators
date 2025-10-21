@@ -3,13 +3,13 @@
   description: 'Checks that `\E[x]` is used for expected value.'
   language: pygrep
   types: [tex]
-  entry: '(\\math(bb|bf)\{E\}|\b(\𝐄|\𝔼|(?<!\\)E))\s*(\[|\(|\{|\\lbrace|\\left|(?i:\\big+l?\b))'
+  entry: '(\\math(bb|bf)\{E\}|\b(\𝐄|\𝔼|(?<!\\)E))(\[|\(|\{|\\lbrace|\\left|(?i:\\big+l?\b))'
 - id: latex-operator-variance
   name: '[tex] Use `\Var[x]` for variance.'
   description: 'Checks that `\Var[x]` is used for variance.'
   language: pygrep
   types: [tex]
-  entry: '(\\math(bb|bf)\{V\}|(\b\𝐕|𝕍|(?<!\\)V))\s*(\[|\(|\{|\\lbrace|\\left|(?i:\\big+l?\b))'
+  entry: '(\\math(bb|bf)\{V\}|(\b\𝐕|𝕍|(?<!\\)V))(\[|\(|\{|\\lbrace|\\left|(?i:\\big+l?\b))'
 - id: latex-operator-derivative
   name: '[tex] Use `\dv{y}{x}` for derivatives.'
   description: 'Checks that `\dv{y}{x}` is used for derivatives.'
