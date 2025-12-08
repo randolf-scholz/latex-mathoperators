@@ -10,11 +10,11 @@
 }
 
 % Check for the physics package again at the end of the preamble
-\AtBeginDocument{%
-\@ifpackageloaded{physics}{% incompatible with physics package
-	\PackageError{mathoperators}{%
-		The physics package is incompatible with the mathoperators package.
-		Consider using physics2 instead.
-	}{}
-}
+\AddToHook{begindocument}{%
+	\@ifpackageloaded{physics}{% incompatible with physics package
+		\PackageError{mathoperators}{%
+			The physics package is incompatible with the mathoperators package.
+			Consider using physics2 instead.
+		}{}
+	}
 }

@@ -1,5 +1,6 @@
 % chktex-file 41
-\ProvidesPackage{mathoperators}[2024-11-15]% chktex 8
+\NeedsTeXFormat{LaTeX2e}[2025-11-01]% chktex 8
+\ProvidesPackage{mathoperators}[2025-12-08]% chktex 8
 %
 % macros defined in this file with 2 or less characters:
 % - \? (where operator)
@@ -18,7 +19,6 @@
 % - \QL (quantile loss)
 
 % region requirements ------------------------------------------------------------------
-\NeedsTeXFormat{LaTeX2e}[2024-06-01]% chktex 8
 \RequirePackage{mathtools}
 
 % Check for the physics package
@@ -30,13 +30,13 @@
 }
 
 % Check again for the physics package at the end of the preamble
-\AtBeginDocument{%
-\@ifpackageloaded{physics}{% incompatible with physics package
-	\PackageError{mathoperators}{%
-		The physics package is incompatible with the mathoperators package.
-		Consider using physics2 instead.
-	}{}
-}
+\AddToHook{begindocument}{%
+	\@ifpackageloaded{physics}{% incompatible with physics package
+		\PackageError{mathoperators}{%
+			The physics package is incompatible with the mathoperators package.
+			Consider using physics2 instead.
+		}{}
+	}
 }
 % endregion requirements ---------------------------------------------------------------
 
@@ -502,7 +502,7 @@
 \DeclareMathOperator{\arsinh} {arsinh}     % inverse hyperbolic trigonometric functions
 \DeclareMathOperator{\arcosh} {arcosh}     % inverse hyperbolic trigonometric functions
 \DeclareMathOperator{\artanh} {artanh}     % inverse hyperbolic trigonometric functions
-\DeclareMathOperator{\atan2}  {atan2}      % two-argument inverse tangent
+\NewDocumentCommand{\atan}{t2}{\operatorname{atan\IfBooleanT{#1}{2}}}% one- or two-argument inverse tangent
 % endregion special functions ----------------------------------------------------------
 
 
