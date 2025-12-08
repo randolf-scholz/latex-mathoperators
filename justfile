@@ -132,7 +132,7 @@ test $case="*":  # run all tests
         # IMPORTANT: do *not* exit here – we still want to print a summary
         echo
         echo
-        echo -e "\033[1;31m⚠️ ⚠️ ⚠️  tests interrupted ⚠️ ⚠️ ⚠️\033[0m"
+        echo -e "\033[1;33m⚠️ ⚠️ ⚠️  tests interrupted ⚠️ ⚠️ ⚠️\033[0m"
         echo
     }
 
