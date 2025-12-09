@@ -13,6 +13,8 @@
 % - \dd (differential)
 % - \dv (derivative)
 % - \GL (general linear group)
+% - \SL (special linear group)
+% - \SO (special orthogonal group)
 % - \NN (neural network)
 % - \NA (not available / missing value)
 % - \KL (Kullback-Leibler divergence)
@@ -417,10 +419,14 @@
 % region Linear Algebra ----------------------------------------------------------------
 % spaces
 \DeclareMathOperator{\GL}    {GL}    % general linear group
+\DeclareMathOperator{\SL}    {SL}    % special linear group
+\DeclareMathOperator{\Orth}  {O}     % orthogonal group
+\DeclareMathOperator{\SO}    {SO}    % special orthogonal group
 \DeclareMathOperator{\Lin}   {Lin}   % space of linear functions
 \DeclareMathOperator{\Mat}   {Mat}   % space of matrices
 \DeclareMathOperator{\Ker}   {Ker}   % kernel of matrix
 \DeclareMathOperator{\Null}  {Null}  % null space (synonym for kernel)
+\DeclareMathOperator{\Sym}   {Sym}   % symmetric matrices
 \DeclareMathOperator{\Skew}  {Skew}  % skew-symmetric matrices
 % induced sets
 \DeclareMathOperator{\Span}  {span}  % linear span
@@ -439,7 +445,7 @@
 
 % region abstract algebra --------------------------------------------------------------
 \DeclareMathOperator{\Hom}   {Hom}   % Homomorphism
-\DeclareMathOperator{\Sym}   {Sym}   % Symmetry group
+% \DeclareMathOperator{\Sym}   {Sym}   % Symmetry group
 \DeclareMathOperator{\Gal}   {Gal}   % Galois group
 \DeclareMathOperator{\Aut}   {Aut}   % Automorphism group
 \DeclareMathOperator{\Alt}   {Alt}   % Alternating group
