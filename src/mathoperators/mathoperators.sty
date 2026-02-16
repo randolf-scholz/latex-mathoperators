@@ -22,23 +22,24 @@
 
 % region requirements ------------------------------------------------------------------
 \RequirePackage{mathtools}
+\RequirePackage{xcolor}
 
 % Check for the physics package
-\@ifpackageloaded{physics}{% incompatible with physics package
+\IfPackageLoadedTF{physics}{% incompatible with physics package
 \PackageError{mathoperators}{%
 	The physics package is incompatible with the mathoperators package.
 	Consider using physics2 instead.
 }{}
-}
+}{}
 
 % Check again for the physics package at the end of the preamble
 \AddToHook{begindocument}{%
-	\@ifpackageloaded{physics}{% incompatible with physics package
+	\IfPackageLoadedTF{physics}{% incompatible with physics package
 		\PackageError{mathoperators}{%
 			The physics package is incompatible with the mathoperators package.
 			Consider using physics2 instead.
 		}{}
-	}
+	}{}
 }
 % endregion requirements ---------------------------------------------------------------
 
@@ -54,12 +55,18 @@
 	variance.usage		= load,
 	covariance.store	= \@mathoperators@covariance,
 	covariance.usage	= load,
+	eqnotemarker.store	= \@mathoperators@eqnotemarker,
+	eqnotemarker.usage	= load,
+	eqnotecolor.store	= \@mathoperators@eqnotecolor,
+	eqnotecolor.usage	= load,
 	physics-compat.if	= @mathoperators@physicscompat,
 }
 \SetKeys[mathoperators]{
 	expectation={\mathbf{E}},
 	variance={Var},
 	covariance={Cov},
+	eqnotemarker={\triangleright},
+	eqnotecolor={gray},
 	physics-compat={false},
 }
 \ProcessKeyOptions[mathoperators]
@@ -202,6 +209,23 @@
 % endregion beamer-aware operators -----------------------------------------------------
 % endregion over/underbrace ------------------------------------------------------------
 
+
+\NewDocumentCommand{\by}{m}{%
+% If equation numbering is enabled on this line, \tag* would clash with the number.
+\ifst@rred% starred amsmath environment, so we can use \tag* safely
+	\tag*{\textcolor{\@mathoperators@eqnotecolor}{\(\@mathoperators@eqnotemarker\)~\text{#1}}}%
+\else\if@eqnsw% amsmath equation numbering switch
+	\PackageError{mathoperators}{%
+		\string\by\space used on a numbered equation line%
+	}{%
+		Use \string\by\space only in starred amsmath environments (align*, gather*, flalign*, ...),%
+		or on a line where numbering is disabled with \string\notag\space or \string\nonumber.%
+	}%
+\else%
+	\tag*{\textcolor{\@mathoperators@eqnotecolor}{\(\@mathoperators@eqnotemarker\)~\text{#1}}}%
+\fi%
+\fi%
+}
 
 
 % TODO: Use mathtools.DeclarePairedDelimiter?
