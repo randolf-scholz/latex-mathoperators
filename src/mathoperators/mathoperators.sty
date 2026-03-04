@@ -346,12 +346,21 @@
 \NewDocumentCommand{\const}{}{\mathord{\mathrm{const.}}}% constant
 \NewDocumentCommand{\iid}{}{\mathord{\mathsf{iid}}}% independent and identically distributed
 % constants
-\NewDocumentCommand{\true}{}{\ifmmode\mathord{\mathtt{true}}\else\texttt{true}\fi}
-\NewDocumentCommand{\false}{}{\ifmmode\mathord{\mathtt{false}}\else\texttt{false}\fi}
-\NewDocumentCommand{\NA}{}{\ifmmode\mathord{\mathtt{NA}}\else\texttt{NA}\fi}
-\NewDocumentCommand{\NaN}{}{\ifmmode\mathord{\mathtt{NaN}}\else\texttt{NaN}\fi}
+\NewDocumentCommand{\mathop@autott}{m}{\ifmmode\mathord{\mathtt{#1}}\else\texttt{#1}\fi}
+\NewDocumentCommand{\TRUE}{}{\mathop@autott{TRUE}}
+\NewDocumentCommand{\FALSE}{}{\mathop@autott{FALSE}}
+\NewDocumentCommand{\true}{}{\mathop@autott{true}}
+\NewDocumentCommand{\false}{}{\mathop@autott{false}}
+\NewDocumentCommand{\NA}{}{\mathop@autott{NA}}
+\NewDocumentCommand{\NaN}{}{\mathop@autott{NaN}}
 \NewCommandCopy{\NAN}{\NaN}
 \NewCommandCopy{\nan}{\NaN}
+\NewDocumentCommand{\OOM}{}{\mathop@autott{OOM}}% out of memory
+\NewDocumentCommand{\POSINF}{}{\mathop@autott{INF}}% infinity
+\NewDocumentCommand{\NEGINF}{}{\mathop@autott{-INF}}% negative infinity
+\NewDocumentCommand{\ULP}{}{\mathop@autott{ULP}}% unit in the last place
+\NewDocumentCommand{\NULL}{}{\mathop@autott{NULL}}% null pointer
+\NewDocumentCommand{\PRNG}{}{\mathop@autott{PRNG}}% pseudorandom number generator
 % tensors
 \NewDocumentCommand{\eye}  {}{\mathord{\mathbb{I}}}% identity tensor
 \NewDocumentCommand{\ones} {}{\mathord{\mathbb{1}}}% all-ones tensor
@@ -579,13 +588,11 @@
 \DeclareMathOperator*{\CRPS} {CRPS}  % Continuous ranked probability score
 \DeclareMathOperator*{\ELBO} {ELBO}  % Evidence lower bound
 \DeclareMathOperator*{\KL}   {D_\textsc{kl}}% Kullback-Leibler divergence
-\DeclareMathOperator*{\NJNLL}{NJNLL} % Normalized joint negative log-likelihood
 \DeclareMathOperator*{\NLL}  {NLL}   % Negative log-likelihood
 \DeclareMathOperator*{\QL}   {QL}    % Quantile loss
 \DeclareMathOperator*{\MAE}  {MAE}   % Mean absolute error
 \DeclareMathOperator*{\MSE}  {MSE}   % Mean squared error
 \DeclareMathOperator*{\RMAE} {RMAE}  % Relative mean absolute error
 \DeclareMathOperator*{\RMSE} {RMSE}  % Root mean squared error
-\DeclareMathOperator*{\RSS}  {RSS}   % Residual sum of squares
 % endregion Machine Learning -----------------------------------------------------------
 % endregion mathoperators --------------------------------------------------------------
